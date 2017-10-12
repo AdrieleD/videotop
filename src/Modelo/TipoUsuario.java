@@ -12,7 +12,8 @@ package Modelo;
 public enum TipoUsuario {
     CLIENTE(0),
     DEPENDENTE(1),
-    FUNCIONARIO(2);
+    ATENDENTE(2),
+    GERENTE(3);
     
     private final int tiposUsuario;
 
