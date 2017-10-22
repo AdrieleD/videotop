@@ -11,7 +11,7 @@ import java.util.Date;
  *
  * @author adriele
  */
-class Ator {
+public class Ator {
     private String nome;
     private Date nascimento;
 

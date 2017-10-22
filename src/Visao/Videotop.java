@@ -16,6 +16,9 @@ public class Videotop {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        TelaLogin t = new TelaLogin();
+        
+        t.setVisible(true);
     }
     
 }

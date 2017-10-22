@@ -19,14 +19,24 @@ public class Usuario {
     private String telefone;
     private TipoUsuario tipoUsuario;
     private Endereco endereco;
+    private String senha;
 
-    public Usuario(String nome, String cpf, Date nascimento, String telefone, TipoUsuario tipoUsuario, Endereco endereco) {
+    public Usuario(String nome, String cpf, Date nascimento, String telefone, TipoUsuario tipoUsuario, Endereco endereco, String senha) {
         this.nome = nome;
         this.cpf = cpf;
         this.nascimento = nascimento;
         this.telefone = telefone;
         this.tipoUsuario = tipoUsuario;
         this.endereco = endereco;
+        this.senha = senha;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
     
     public String getNome() {

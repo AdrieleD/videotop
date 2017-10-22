@@ -13,18 +13,30 @@ import java.util.Date;
  * @author adriele
  */
 public class Filme {
+    private int idFilme;
     private String titulo;
-    private Genero genero;
-    private String estudio;
+    private ArrayList<Genero> generos = new ArrayList<>();
+    private ArrayList<Estudio> estudios = new ArrayList<>();
     private Date lancamento;
     public ArrayList<Ator> ListaAtores = new ArrayList<>();
+    private int quantFitas;
+    private int quantFitasDisp;
 
-    public Filme(String titulo, Genero genero, String estudio, Date lancamento, Ator ator) {
+    public Filme(int idFilme, String titulo, Date lancamento, int quantFitas, int quantFitasDisp) {
+        this.idFilme = idFilme;
         this.titulo = titulo;
-        this.genero = genero;
-        this.estudio = estudio;
         this.lancamento = lancamento;
-        this.ListaAtores.add(ator);
+        this.quantFitas = quantFitas;
+        this.quantFitasDisp = quantFitasDisp;
+    }
+
+    
+    public int getIdFilme() {
+        return idFilme;
+    }
+
+    public void setIdFilme(int idFilme) {
+        this.idFilme = idFilme;
     }
 
     public String getTitulo() {
@@ -35,20 +47,20 @@ public class Filme {
         this.titulo = titulo;
     }
 
-    public Genero getGenero() {
-        return genero;
+    public ArrayList<Genero> getGenero() {
+        return generos;
     }
 
-    public void setGenero(Genero genero) {
-        this.genero = genero;
+    public void setListaGeneros(ArrayList<Genero> ListaGeneros) {
+        this.generos = ListaGeneros;
     }
 
-    public String getEstudio() {
-        return estudio;
+    public ArrayList<Estudio> getEstudio() {
+        return estudios;
     }
 
-    public void setEstudio(String estudio) {
-        this.estudio = estudio;
+    public void setListaEstudios(ArrayList<Estudio> ListaEstudios) {
+        this.estudios = ListaEstudios;
     }
 
     public ArrayList<Ator> getListaAtores() {
