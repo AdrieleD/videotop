@@ -35,7 +35,7 @@ public class TelaLogin extends javax.swing.JFrame {
         } catch (ParseException ex) {
             Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
-        controladorU.cadastrarUsuario("José Wesley", "134.997.176-62", d, "998077156", TipoUsuario.ATENDENTE, e, "12345");
+        controladorU.cadastrarUsuario("José Wesley", "123.456.789-00", d, "998077156", TipoUsuario.ATENDENTE, e, "12345");
     }
 
     /**
@@ -54,6 +54,7 @@ public class TelaLogin extends javax.swing.JFrame {
         jFormattedTextFieldcpf = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setText("CPF:");
 
@@ -116,8 +117,12 @@ public class TelaLogin extends javax.swing.JFrame {
         Usuario u=controladorU.realizarLogin(jFormattedTextFieldcpf.getText(), jPasswordFieldSenha.getText());
         if(u!=null){
             System.out.println("Login realizado com sucesso");
-            new TelaPrincipal(controladorU, u).setVisible(true); //recebe o tipoUsuario para verificar qual tipo a interface vai abrir
-       }
+            switch (u.getTipoUsuario()){
+                case ATENDENTE:
+                    new TelaPrincipal(controladorU, u).setVisible(true); //recebe o tipoUsuario para verificar qual tipo a interface vai abrir
+                break;
+            }
+        }
         else
             JOptionPane.showMessageDialog(null, "CPF ou senha inválidos! Digite novamente", "Erro!", JOptionPane.ERROR_MESSAGE);
     }//GEN-LAST:event_jButtonEntrarActionPerformed
@@ -143,7 +148,6 @@ public class TelaLogin extends javax.swing.JFrame {
     DateFormat df= new SimpleDateFormat("dd/mm/yyyy");
     Date d = new Date();
     Endereco e = new Endereco("Pará de Minas", 325, "Centro", "Florestal", "Minas Gerais", "35690-000");
-    Usuario u = new Usuario("José Wesley", "13499717662", d, "998077156", TipoUsuario.ATENDENTE, e, "12345");
     
         
     // Variables declaration - do not modify//GEN-BEGIN:variables

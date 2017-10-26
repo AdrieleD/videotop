@@ -5,9 +5,17 @@
  */
 package Visao;
 
+import Controle.ControladorUsuarios;
+import Modelo.Endereco;
+import Modelo.TipoUsuario;
+import java.awt.Component;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.text.MaskFormatter;
 
 /**
@@ -19,8 +27,9 @@ public class CadastrarUsuario extends javax.swing.JFrame {
     /**
      * Creates new form CadastrarUsuario
      */
-    public CadastrarUsuario() {
+    public CadastrarUsuario(ControladorUsuarios controlador) {
         initComponents();
+        this.controladorU = controlador;
         try {
             MaskFormatter mask   = new MaskFormatter( "###.###.###-##" );
             mask.install(jFormattedTextFieldCPF);
@@ -72,6 +81,7 @@ public class CadastrarUsuario extends javax.swing.JFrame {
         jPasswordFieldSenha = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setText("CADASTRAR CLIENTE");
 
@@ -107,6 +117,11 @@ public class CadastrarUsuario extends javax.swing.JFrame {
         });
 
         jButtonCancelar.setText("Cancelar");
+        jButtonCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelarActionPerformed(evt);
+            }
+        });
 
         jTextFieldTelefone.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -122,13 +137,13 @@ public class CadastrarUsuario extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(3, 3, 3)
                         .addComponent(jTextFieldNome))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel12)
                         .addGap(18, 18, 18)
-                        .addComponent(jPasswordFieldSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                        .addComponent(jPasswordFieldSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jButtonOK)
@@ -157,7 +172,6 @@ public class CadastrarUsuario extends javax.swing.JFrame {
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
                         .addComponent(jFormattedTextFieldCPF))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -165,8 +179,9 @@ public class CadastrarUsuario extends javax.swing.JFrame {
                     .addComponent(jCheckBoxDependente, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextFieldTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jTextFieldTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -222,47 +237,51 @@ public class CadastrarUsuario extends javax.swing.JFrame {
 
     private void jButtonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOKActionPerformed
         // TODO add your handling code here:
+        int numero = Integer.parseInt(jTextFieldNumero.getText());
+        Endereco e = new Endereco(jTextFieldLogradouro.getText(),numero , jTextFieldBairro.getText(), jTextFieldCidade.getText(), jTextFieldEstado.getText(), jTextFieldCEP.getText());
+        TipoUsuario tu;
+        if(jCheckBoxDependente.isSelected())
+            tu = TipoUsuario.DEPENDENTE;
+        else
+            tu = TipoUsuario.CLIENTE;
+        DateFormat df= new SimpleDateFormat("dd/mm/yyyy");
+        Date data = new Date();
+        try {
+            data = df.parse(jFormattedTextFielddata.getText());
+        } catch (ParseException ex) {
+            Logger.getLogger(CadastrarUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       if( controladorU.cadastrarUsuario(jTextFieldNome.getText(), jFormattedTextFieldCPF.getText(), data, jTextFieldTelefone.getText(), tu,e, jPasswordFieldSenha.getText()))
+           JOptionPane.showMessageDialog(null, "Usuario cadastrado com sucesso", "", JOptionPane.INFORMATION_MESSAGE);
+       else
+           JOptionPane.showMessageDialog(null, "", "Problema ao realizar cadastro", JOptionPane.ERROR_MESSAGE);
+        this.dispose();
     }//GEN-LAST:event_jButtonOKActionPerformed
 
     private void jTextFieldTelefoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldTelefoneActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldTelefoneActionPerformed
 
+    private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarActionPerformed
+        // TODO add your handling code here:
+        jTextFieldBairro.setText("");
+        jTextFieldCEP.setText("");
+        jTextFieldCidade.setText("");
+        jTextFieldEstado.setText("");
+        jTextFieldLogradouro.setText("");
+        jTextFieldNome.setText("");
+        jTextFieldNumero.setText("");
+        jTextFieldTelefone.setText("");
+        jFormattedTextFieldCPF.setText("");
+        jFormattedTextFielddata.setText("");
+        jCheckBoxDependente.setSelected(false);
+    }//GEN-LAST:event_jButtonCancelarActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadastrarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadastrarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadastrarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CadastrarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CadastrarUsuario().setVisible(true);
-            }
-        });
-    }
-
+    private ControladorUsuarios controladorU;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCancelar;
     private javax.swing.JButton jButtonOK;

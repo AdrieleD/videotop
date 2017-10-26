@@ -20,8 +20,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
     public TelaPrincipal(ControladorUsuarios controlador, Usuario u) {
         this.controladorU=controlador;
         this.u=u;
-        jLabelBemvindo.setText("Bem-vindo(a) "+u.getNome());
         initComponents();
+        jLabelBemvindo.setText("Bem-vindo(a) "+u.getNome());
         
     }
 
@@ -41,14 +41,25 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jButtonListarCLiente = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jButtonCFilme.setText("Cadastrar Filme");
 
         jButtonListarFilmes.setText("Listar Filmes");
 
         jButtonCadastrarCliente.setText("Cadastrar Cliente");
+        jButtonCadastrarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCadastrarClienteActionPerformed(evt);
+            }
+        });
 
         jButtonListarCLiente.setText("Listar Clientes");
+        jButtonListarCLiente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonListarCLienteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -85,6 +96,19 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButtonCadastrarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCadastrarClienteActionPerformed
+        // TODO add your handling code here:
+        new CadastrarUsuario(controladorU).setVisible(true);
+    }//GEN-LAST:event_jButtonCadastrarClienteActionPerformed
+
+    private void jButtonListarCLienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonListarCLienteActionPerformed
+        // TODO add your handling code here:
+        for(Usuario u: controladorU.getUsuariosCadastrados()){
+            System.out.println(u.getNome() +" " + u.getCpf());
+        }
+        new TodosUsuarios(controladorU).setVisible(true);
+    }//GEN-LAST:event_jButtonListarCLienteActionPerformed
 
     /**
      * @param args the command line arguments

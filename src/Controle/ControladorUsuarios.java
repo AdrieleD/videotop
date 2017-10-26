@@ -17,6 +17,10 @@ import java.util.Date;
  */
 public class ControladorUsuarios {
     private ArrayList<Usuario> usuariosCadastrados;
+
+    public ArrayList<Usuario> getUsuariosCadastrados() {
+        return usuariosCadastrados;
+    }
     
     public ControladorUsuarios(){
         usuariosCadastrados = new ArrayList ();
@@ -45,6 +49,7 @@ public class ControladorUsuarios {
         Usuario usuario = new Usuario(nome, cpf, nascimento, telefone, tipoUsuario, endereco, senha);
         usuariosCadastrados.add(usuario);
         System.out.println("Usuario Cadastrado com sucesso");
+        System.out.println(usuario.getCpf() +" "+usuario.getSenha());
         return true;
     }
     
