@@ -35,7 +35,7 @@ public class ConexaoBanco  {
         this.sql = null;
         this.stmt = null;
         this.rs = null;
-        this.conexao = DriverManager.getConnection("jdbc:mysql://localhost/videotopdb", "root", "344037");
+        this.conexao = DriverManager.getConnection("jdbc:mysql://localhost/videotopdb", "root", "foiprotpdetopicos");
     }
     
     public boolean  insertUsuario(String nome, String cpf, Date nascimento, String telefone, TipoUsuario tipoUsuario, Endereco endereco, String senha) throws SQLException{
