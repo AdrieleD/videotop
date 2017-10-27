@@ -6,8 +6,11 @@
 package Visao;
 
 import Controle.ControladorUsuarios;
+import Modelo.TipoUsuario;
 import Modelo.Usuario;
 import java.util.ArrayList;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -39,6 +42,8 @@ public class TodosUsuarios extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableUsuarios = new javax.swing.JTable();
+        jButtonExcluir = new javax.swing.JButton();
+        jButtonEditar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -68,6 +73,20 @@ public class TodosUsuarios extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTableUsuarios);
 
+        jButtonExcluir.setText("Excluir");
+        jButtonExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonExcluirActionPerformed(evt);
+            }
+        });
+
+        jButtonEditar.setText("Editar");
+        jButtonEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -75,16 +94,68 @@ public class TodosUsuarios extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 25, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addComponent(jButtonExcluir)
+                .addGap(30, 30, 30)
+                .addComponent(jButtonEditar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 25, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonExcluir)
+                    .addComponent(jButtonEditar))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
+        // TODO add your handling code here:
+        javax.swing.table.DefaultTableModel val = (javax.swing.table.DefaultTableModel) jTableUsuarios.getModel();
+        int i = jTableUsuarios.getSelectedRow();
+        if(i==-1)
+        System.out.println("Erro");
+        else
+        {
+            controladorU.removeUsuario(val.getValueAt(i, 1).toString());
+            val.removeRow(i);
+        }
+    }//GEN-LAST:event_jButtonExcluirActionPerformed
+
+    private void jButtonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditarActionPerformed
+        // TODO add your handling code here:
+        int i = jTableUsuarios.getSelectedRow();
+       if(i==-1){
+            JOptionPane.showMessageDialog(null,"Favor selecionar um cliente!");
+        }
+        else{
+            CadastrarUsuario frame = new CadastrarUsuario(controladorU);
+            Usuario u = controladorU.buscaUsuario(jTableUsuarios.getValueAt(i, 1).toString());
+            frame.jTextFieldNome.setText(u.getNome());
+            frame.jTextFieldBairro.setText(u.getEndereco().getBairro());
+            frame.jTextFieldCEP.setText(u.getEndereco().getCep());
+            frame.jTextFieldCidade.setText(u.getEndereco().getCidade());
+            frame.jTextFieldEstado.setText(u.getEndereco().getEstado());
+            frame.jTextFieldLogradouro.setText(u.getEndereco().getLogradouro());
+            frame.jTextFieldNumero.setText(Integer.toString(u.getEndereco().getNumero()));
+            frame.jTextFieldTelefone.setText(u.getTelefone());
+            frame.jFormattedTextFieldCPF.setText(u.getCpf());
+            System.out.println(u.getNascimento().toString());
+            frame.jFormattedTextFielddata.setText(u.getNascimento().toString());
+            if(u.getTipoUsuario()==TipoUsuario.CLIENTE)
+                frame.jCheckBoxDependente.setSelected(false);
+            else
+                frame.jCheckBoxDependente.setSelected(true);
+            frame.setVisible(true);
+            frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+       }
+    }//GEN-LAST:event_jButtonEditarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -92,6 +163,8 @@ public class TodosUsuarios extends javax.swing.JFrame {
     private ControladorUsuarios controladorU;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonEditar;
+    private javax.swing.JButton jButtonExcluir;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableUsuarios;
     // End of variables declaration//GEN-END:variables

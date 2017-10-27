@@ -5,7 +5,9 @@
         <group>
             <file>file:/home/jw/videotop/src/Controle/ControladorUsuarios.java</file>
             <file>file:/home/jw/videotop/src/Visao/CadastrarFilme.java</file>
+            <file>file:/home/jw/videotop/src/Visao/Videotop.java</file>
             <file>file:/home/jw/videotop/src/Visao/CadastrarUsuario.java</file>
+            <file>file:/home/jw/videotop/src/Persistencia/ConexaoBanco.java</file>
             <file>file:/home/jw/videotop/src/Visao/TelaPrincipal.java</file>
             <file>file:/home/jw/videotop/src/Visao/TodosUsuarios.java</file>
             <file>file:/home/jw/videotop/src/Visao/TelaLogin.java</file>

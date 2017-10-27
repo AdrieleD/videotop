@@ -9,12 +9,14 @@ import Controle.ControladorUsuarios;
 import Modelo.Endereco;
 import Modelo.TipoUsuario;
 import java.awt.Component;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.text.MaskFormatter;
 
@@ -42,6 +44,12 @@ public class CadastrarUsuario extends javax.swing.JFrame {
         } catch (ParseException ex) {
             Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void RecebeJanela(JFrame p)
+    {
+        this.janelaRecebida = p;
+        
     }
 
     /**
@@ -251,10 +259,14 @@ public class CadastrarUsuario extends javax.swing.JFrame {
         } catch (ParseException ex) {
             Logger.getLogger(CadastrarUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
-       if( controladorU.cadastrarUsuario(jTextFieldNome.getText(), jFormattedTextFieldCPF.getText(), data, jTextFieldTelefone.getText(), tu,e, jPasswordFieldSenha.getText()))
-           JOptionPane.showMessageDialog(null, "Usuario cadastrado com sucesso", "", JOptionPane.INFORMATION_MESSAGE);
-       else
-           JOptionPane.showMessageDialog(null, "", "Problema ao realizar cadastro", JOptionPane.ERROR_MESSAGE);
+        try {
+            if( controladorU.cadastrarUsuario(jTextFieldNome.getText(), jFormattedTextFieldCPF.getText(), data, jTextFieldTelefone.getText(), tu,e, jPasswordFieldSenha.getText()))
+                JOptionPane.showMessageDialog(null, "Usuario cadastrado com sucesso", "", JOptionPane.INFORMATION_MESSAGE);
+            else
+                JOptionPane.showMessageDialog(null, "", "Problema ao realizar cadastro", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException ex) {
+            Logger.getLogger(CadastrarUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.dispose();
     }//GEN-LAST:event_jButtonOKActionPerformed
 
@@ -282,12 +294,13 @@ public class CadastrarUsuario extends javax.swing.JFrame {
      */
 
     private ControladorUsuarios controladorU;
+    JFrame janelaRecebida;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCancelar;
     private javax.swing.JButton jButtonOK;
-    private javax.swing.JCheckBox jCheckBoxDependente;
-    private javax.swing.JFormattedTextField jFormattedTextFieldCPF;
-    private javax.swing.JFormattedTextField jFormattedTextFielddata;
+    protected javax.swing.JCheckBox jCheckBoxDependente;
+    protected javax.swing.JFormattedTextField jFormattedTextFieldCPF;
+    protected javax.swing.JFormattedTextField jFormattedTextFielddata;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -300,14 +313,14 @@ public class CadastrarUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPasswordField jPasswordFieldSenha;
-    private javax.swing.JTextField jTextFieldBairro;
-    private javax.swing.JTextField jTextFieldCEP;
-    private javax.swing.JTextField jTextFieldCidade;
-    private javax.swing.JTextField jTextFieldEstado;
-    private javax.swing.JTextField jTextFieldLogradouro;
-    private javax.swing.JTextField jTextFieldNome;
-    private javax.swing.JTextField jTextFieldNumero;
-    private javax.swing.JTextField jTextFieldTelefone;
+    protected javax.swing.JPasswordField jPasswordFieldSenha;
+    protected javax.swing.JTextField jTextFieldBairro;
+    protected javax.swing.JTextField jTextFieldCEP;
+    protected javax.swing.JTextField jTextFieldCidade;
+    protected javax.swing.JTextField jTextFieldEstado;
+    protected javax.swing.JTextField jTextFieldLogradouro;
+    protected javax.swing.JTextField jTextFieldNome;
+    protected javax.swing.JTextField jTextFieldNumero;
+    protected javax.swing.JTextField jTextFieldTelefone;
     // End of variables declaration//GEN-END:variables
 }

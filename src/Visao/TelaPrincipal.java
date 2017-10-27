@@ -7,6 +7,7 @@ package Visao;
 
 import Controle.ControladorUsuarios;
 import Modelo.Usuario;
+import javax.swing.JFrame;
 
 /**
  *
@@ -107,7 +108,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
         for(Usuario u: controladorU.getUsuariosCadastrados()){
             System.out.println(u.getNome() +" " + u.getCpf());
         }
-        new TodosUsuarios(controladorU).setVisible(true);
+        TodosUsuarios frame = new TodosUsuarios(controladorU);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }//GEN-LAST:event_jButtonListarCLienteActionPerformed
 
     /**

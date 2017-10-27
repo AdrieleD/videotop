@@ -9,6 +9,7 @@ import Controle.ControladorUsuarios;
 import Modelo.Endereco;
 import Modelo.TipoUsuario;
 import Modelo.Usuario;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,7 +28,8 @@ public class TelaLogin extends javax.swing.JFrame {
     /**
      * Creates new form TelaLogin
      */
-    public TelaLogin() {
+    public TelaLogin() throws SQLException {
+        this.controladorU = new ControladorUsuarios();
         initComponents();
         try {
             MaskFormatter mask   = new MaskFormatter( "###.###.###-##" );
@@ -35,7 +37,11 @@ public class TelaLogin extends javax.swing.JFrame {
         } catch (ParseException ex) {
             Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
-        controladorU.cadastrarUsuario("José Wesley", "123.456.789-00", d, "998077156", TipoUsuario.ATENDENTE, e, "12345");
+        try {
+            controladorU.cadastrarUsuario("José Wesley", "123.456.789-00", d, "998077156", TipoUsuario.ATENDENTE, e, "12345");
+        } catch (SQLException ex) {
+            Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -139,17 +145,20 @@ public class TelaLogin extends javax.swing.JFrame {
         
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaLogin().setVisible(true);
+                try {
+                    new TelaLogin().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
-    private ControladorUsuarios controladorU = new ControladorUsuarios();
+    private ControladorUsuarios controladorU;
     DateFormat df= new SimpleDateFormat("dd/mm/yyyy");
     Date d = new Date();
-    Endereco e = new Endereco("Pará de Minas", 325, "Centro", "Florestal", "Minas Gerais", "35690-000");
-    
-        
+    Endereco e = new Endereco("Pará de Minas", 325, "Centro", "Florestal", "Minas Gerais", "35690000");
+            
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonEntrar;
     private javax.swing.JFormattedTextField jFormattedTextFieldcpf;

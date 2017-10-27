@@ -8,6 +8,8 @@ package Controle;
 import Modelo.Endereco;
 import Modelo.TipoUsuario;
 import Modelo.Usuario;
+import Persistencia.ConexaoBanco;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -17,12 +19,15 @@ import java.util.Date;
  */
 public class ControladorUsuarios {
     private ArrayList<Usuario> usuariosCadastrados;
-
+    
+    private ConexaoBanco conexaoBanco;
+            
     public ArrayList<Usuario> getUsuariosCadastrados() {
         return usuariosCadastrados;
     }
     
-    public ControladorUsuarios(){
+    public ControladorUsuarios() throws SQLException{
+        conexaoBanco = new ConexaoBanco();
         usuariosCadastrados = new ArrayList ();
    }
     
@@ -36,7 +41,7 @@ public class ControladorUsuarios {
         return null;
     }
     
-    public boolean cadastrarUsuario (String nome, String cpf, Date nascimento, String telefone, TipoUsuario tipoUsuario, Endereco endereco, String senha){
+    public boolean cadastrarUsuario (String nome, String cpf, Date nascimento, String telefone, TipoUsuario tipoUsuario, Endereco endereco, String senha) throws SQLException{
         if(nome.equals("")||cpf.equals("")|| telefone.equals("") || endereco.equals("") || senha.equals(""))
         {
             return false;
@@ -48,6 +53,7 @@ public class ControladorUsuarios {
         }
         Usuario usuario = new Usuario(nome, cpf, nascimento, telefone, tipoUsuario, endereco, senha);
         usuariosCadastrados.add(usuario);
+        conexaoBanco.insertUsuario(nome, cpf, nascimento, telefone, tipoUsuario, endereco, senha);
         System.out.println("Usuario Cadastrado com sucesso");
         System.out.println(usuario.getCpf() +" "+usuario.getSenha());
         return true;
