@@ -35,7 +35,7 @@ public class ConexaoBanco  {
         this.sql = null;
         this.stmt = null;
         this.rs = null;
-        this.conexao = DriverManager.getConnection("jdbc:mysql://localhost/videotopdb", "root", "foiprotpdetopicos");
+        this.conexao = DriverManager.getConnection("jdbc:mysql://localhost/videotopdb", "root", "344037");
     }
     
     public boolean  insertUsuario(String nome, String cpf, Date nascimento, String telefone, TipoUsuario tipoUsuario, Endereco endereco, String senha) throws SQLException{
@@ -64,7 +64,15 @@ public class ConexaoBanco  {
                     stmt.close();
                 
                 return  true;
+    } 
+    
+    public boolean realizarEmprestimo(int idFilme, String cpf, Date dataEmprestimo, Date dataDevolucao, float valor){
+        cpf=cpf.replace(".", "");
+        cpf=cpf.replace("-", "");
+        
+        
+        return true;
     }
     
-      
+    //criar método para atualizar banco de dados
 }

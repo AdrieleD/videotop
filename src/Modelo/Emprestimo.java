@@ -13,17 +13,56 @@ import java.util.Date;
  */
 public class Emprestimo {
     private int idFilme;
-    private char cpf;
+    private String cpf;
     private Date dataEmprestimo;
     private Date dataDevolucao;
     float valor;
 
-    public Emprestimo(int idFilme, char cpf, Date dataEmprestimo, Date dataDevolucao, float valor) {
+    public Emprestimo(int idFilme, String cpf, Date dataEmprestimo, Date dataDevolucao, float valor) {
         this.idFilme = idFilme;
         this.cpf = cpf;
         this.dataEmprestimo = dataEmprestimo;
         this.dataDevolucao = dataDevolucao;
         this.valor = valor;
     }
-    
+
+    public int getIdFilme() {
+        return idFilme;
+    }
+
+    public void setIdFilme(int idFilme) {
+        this.idFilme = idFilme;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public Date getDataEmprestimo() {
+        return dataEmprestimo;
+    }
+
+    public void setDataEmprestimo(Date dataEmprestimo) {
+        this.dataEmprestimo = dataEmprestimo;
+    }
+
+    public Date getDataDevolucao() {
+        return dataDevolucao;
+    }
+
+    public void setDataDevolucao(Date dataDevolucao) {
+        this.dataDevolucao = dataDevolucao;
+    }
+
+    public float getValor() {
+        return valor;
+    }
+
+    public void setValor(float valor) {
+        this.valor = valor;
+    }
 }

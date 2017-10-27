@@ -6,8 +6,6 @@
 package Controle;
 
 import Modelo.Filme;
-import Modelo.Genero;
-import Modelo.Ator;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -17,7 +15,6 @@ import java.util.Date;
  */
 public class ControladorFilmes {
     private ArrayList<Filme> filmesCadastrados = new ArrayList ();
-    
     
     
     public Filme buscaFilme(int idFilme){
@@ -55,6 +52,36 @@ public class ControladorFilmes {
             System.out.println("Filme não existe!");
             return false;
         }     
+    }
+    
+    public boolean diminuiQtdFilmes(int idFilme){
+        Filme u=buscaFilme(idFilme);
+        if(u != null){
+            u.setQuantFitasDisp();
+            return true;
+        }
+        else
+        {
+            System.out.println("Filme não existe!");
+            return false;
+        }
+    }
+    
+    public boolean verificaQtdeFitas(int idFilme){
+        Filme u=buscaFilme(idFilme);
+        if(u != null){
+            if(u.getQuantFitas()<= 0){
+                return false; //não pode realizar impréstimo
+            }
+            else{
+                return true;
+            }
+        }
+        else
+        {
+            System.out.println("Filme não existe!");
+            return false;
+        }
     }
     
 }

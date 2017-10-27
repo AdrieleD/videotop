@@ -38,7 +38,7 @@ public class TelaLogin extends javax.swing.JFrame {
             Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
-            controladorU.cadastrarUsuario("José Wesley", "123.456.789-00", d, "998077156", TipoUsuario.ATENDENTE, e, "12345");
+            controladorU.cadastrarUsuario("José Wesley", "120.864.066-65", d, "998077156", TipoUsuario.ATENDENTE, e, "12345");
         } catch (SQLException ex) {
             Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
         }

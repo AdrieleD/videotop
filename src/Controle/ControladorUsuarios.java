@@ -51,11 +51,13 @@ public class ControladorUsuarios {
             System.out.println("Usuário já existe!");
             return false;
         }
+        
         Usuario usuario = new Usuario(nome, cpf, nascimento, telefone, tipoUsuario, endereco, senha);
         usuariosCadastrados.add(usuario);
         conexaoBanco.insertUsuario(nome, cpf, nascimento, telefone, tipoUsuario, endereco, senha);
         System.out.println("Usuario Cadastrado com sucesso");
         System.out.println(usuario.getCpf() +" "+usuario.getSenha());
+        
         return true;
     }
     

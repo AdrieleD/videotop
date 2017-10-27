@@ -70,4 +70,46 @@ public class Filme {
     public void setListaAtores(ArrayList<Ator> ListaAtores) {
         this.ListaAtores = ListaAtores;
     }
+
+    public ArrayList<Genero> getGeneros() {
+        return generos;
+    }
+
+    public void setGeneros(ArrayList<Genero> generos) {
+        this.generos = generos;
+    }
+
+    public ArrayList<Estudio> getEstudios() {
+        return estudios;
+    }
+
+    public void setEstudios(ArrayList<Estudio> estudios) {
+        this.estudios = estudios;
+    }
+
+    public Date getLancamento() {
+        return lancamento;
+    }
+
+    public void setLancamento(Date lancamento) {
+        this.lancamento = lancamento;
+    }
+
+    public int getQuantFitas() {
+        return quantFitas;
+    }
+
+    public void setQuantFitas(int quantFitas) {
+        this.quantFitas = quantFitas;
+    }
+
+    public int getQuantFitasDisp() {
+        return quantFitasDisp;
+    }
+
+    public void setQuantFitasDisp() {
+        this.quantFitasDisp = quantFitasDisp - 1;
+    }
+    
+    
 }
