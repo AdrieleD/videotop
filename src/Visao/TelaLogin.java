@@ -37,11 +37,6 @@ public class TelaLogin extends javax.swing.JFrame {
         } catch (ParseException ex) {
             Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
-        try {
-            controladorU.cadastrarUsuario("José Wesley", "123.456.789-00", d, "998077156", TipoUsuario.ATENDENTE, e, "12345");
-        } catch (SQLException ex) {
-            Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     /**
@@ -120,7 +115,12 @@ public class TelaLogin extends javax.swing.JFrame {
 
     private void jButtonEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEntrarActionPerformed
         // TODO add your handling code here:
-        Usuario u=controladorU.realizarLogin(jFormattedTextFieldcpf.getText(), jPasswordFieldSenha.getText());
+        Usuario u = null;
+        try {
+            u = controladorU.realizarLogin(jFormattedTextFieldcpf.getText(), jPasswordFieldSenha.getText());
+        } catch (SQLException ex) {
+            Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
         if(u!=null){
             System.out.println("Login realizado com sucesso");
             switch (u.getTipoUsuario()){
@@ -155,9 +155,6 @@ public class TelaLogin extends javax.swing.JFrame {
     }
 
     private ControladorUsuarios controladorU;
-    DateFormat df= new SimpleDateFormat("dd/mm/yyyy");
-    Date d = new Date();
-    Endereco e = new Endereco("Pará de Minas", 325, "Centro", "Florestal", "Minas Gerais", "35690000");
             
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonEntrar;

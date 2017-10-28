@@ -31,10 +31,17 @@ public class CadastrarUsuario extends javax.swing.JFrame {
      */
     public CadastrarUsuario(ControladorUsuarios controlador) {
         initComponents();
+         jFormattedTextFieldCPFTitular.setEnabled(false);
         this.controladorU = controlador;
         try {
             MaskFormatter mask   = new MaskFormatter( "###.###.###-##" );
             mask.install(jFormattedTextFieldCPF);
+        } catch (ParseException ex) {
+            Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            MaskFormatter mask   = new MaskFormatter( "###.###.###-##" );
+            mask.install(jFormattedTextFieldCPFTitular);
         } catch (ParseException ex) {
             Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -70,8 +77,6 @@ public class CadastrarUsuario extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jButtonOK = new javax.swing.JButton();
@@ -83,10 +88,10 @@ public class CadastrarUsuario extends javax.swing.JFrame {
         jTextFieldLogradouro = new javax.swing.JTextField();
         jTextFieldNumero = new javax.swing.JTextField();
         jTextFieldBairro = new javax.swing.JTextField();
-        jTextFieldCidade = new javax.swing.JTextField();
-        jTextFieldEstado = new javax.swing.JTextField();
         jTextFieldCEP = new javax.swing.JTextField();
         jPasswordFieldSenha = new javax.swing.JPasswordField();
+        jLabel13 = new javax.swing.JLabel();
+        jFormattedTextFieldCPFTitular = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -102,16 +107,17 @@ public class CadastrarUsuario extends javax.swing.JFrame {
         jLabel5.setText("Telefone:");
 
         jCheckBoxDependente.setText("Dependente?");
+        jCheckBoxDependente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxDependenteActionPerformed(evt);
+            }
+        });
 
         jLabel6.setText("Logradouro:");
 
         jLabel7.setText("Número:");
 
         jLabel8.setText("Bairro:");
-
-        jLabel9.setText("Cidade:");
-
-        jLabel10.setText("Estado:");
 
         jLabel11.setText("CEP:");
 
@@ -137,6 +143,8 @@ public class CadastrarUsuario extends javax.swing.JFrame {
             }
         });
 
+        jLabel13.setText("CPF Titular:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -148,10 +156,7 @@ public class CadastrarUsuario extends javax.swing.JFrame {
                         .addGap(3, 3, 3)
                         .addComponent(jTextFieldNome))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel12)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPasswordFieldSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jButtonOK)
@@ -162,35 +167,40 @@ public class CadastrarUsuario extends javax.swing.JFrame {
                                     .addComponent(jLabel6)
                                     .addComponent(jLabel7)
                                     .addComponent(jLabel8)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jLabel10)
                                     .addComponent(jLabel11))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jTextFieldLogradouro)
                                     .addComponent(jTextFieldBairro)
-                                    .addComponent(jTextFieldCidade)
-                                    .addComponent(jTextFieldEstado)
                                     .addComponent(jTextFieldCEP, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
                                     .addComponent(jTextFieldNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addGap(35, 35, 35))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jLabel3)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel12)
                         .addGap(18, 18, 18)
-                        .addComponent(jFormattedTextFieldCPF))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jFormattedTextFielddata, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jCheckBoxDependente, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextFieldTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jPasswordFieldSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel13)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jFormattedTextFieldCPFTitular, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel3)
+                            .addGap(18, 18, 18)
+                            .addComponent(jFormattedTextFieldCPF))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel4)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jFormattedTextFielddata, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jCheckBoxDependente)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel5)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextFieldTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(287, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -221,18 +231,16 @@ public class CadastrarUsuario extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jCheckBoxDependente)
-                    .addComponent(jLabel9)
-                    .addComponent(jTextFieldCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(jTextFieldEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12)
-                    .addComponent(jPasswordFieldSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(jTextFieldCEP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(jFormattedTextFieldCPFTitular, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPasswordFieldSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonOK)
@@ -246,7 +254,7 @@ public class CadastrarUsuario extends javax.swing.JFrame {
     private void jButtonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOKActionPerformed
         // TODO add your handling code here:
         int numero = Integer.parseInt(jTextFieldNumero.getText());
-        Endereco e = new Endereco(jTextFieldLogradouro.getText(),numero , jTextFieldBairro.getText(), jTextFieldCidade.getText(), jTextFieldEstado.getText(), jTextFieldCEP.getText());
+        Endereco e = new Endereco(jTextFieldLogradouro.getText(),numero , jTextFieldBairro.getText(), jTextFieldCEP.getText());
         TipoUsuario tu;
         if(jCheckBoxDependente.isSelected())
             tu = TipoUsuario.DEPENDENTE;
@@ -278,8 +286,6 @@ public class CadastrarUsuario extends javax.swing.JFrame {
         // TODO add your handling code here:
         jTextFieldBairro.setText("");
         jTextFieldCEP.setText("");
-        jTextFieldCidade.setText("");
-        jTextFieldEstado.setText("");
         jTextFieldLogradouro.setText("");
         jTextFieldNome.setText("");
         jTextFieldNumero.setText("");
@@ -288,6 +294,12 @@ public class CadastrarUsuario extends javax.swing.JFrame {
         jFormattedTextFielddata.setText("");
         jCheckBoxDependente.setSelected(false);
     }//GEN-LAST:event_jButtonCancelarActionPerformed
+
+    private void jCheckBoxDependenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxDependenteActionPerformed
+        // TODO add your handling code here:
+        if(jCheckBoxDependente.isSelected())
+            jFormattedTextFieldCPFTitular.setEnabled(true);
+    }//GEN-LAST:event_jCheckBoxDependenteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -300,11 +312,12 @@ public class CadastrarUsuario extends javax.swing.JFrame {
     private javax.swing.JButton jButtonOK;
     protected javax.swing.JCheckBox jCheckBoxDependente;
     protected javax.swing.JFormattedTextField jFormattedTextFieldCPF;
+    private javax.swing.JFormattedTextField jFormattedTextFieldCPFTitular;
     protected javax.swing.JFormattedTextField jFormattedTextFielddata;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -312,12 +325,9 @@ public class CadastrarUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     protected javax.swing.JPasswordField jPasswordFieldSenha;
     protected javax.swing.JTextField jTextFieldBairro;
     protected javax.swing.JTextField jTextFieldCEP;
-    protected javax.swing.JTextField jTextFieldCidade;
-    protected javax.swing.JTextField jTextFieldEstado;
     protected javax.swing.JTextField jTextFieldLogradouro;
     protected javax.swing.JTextField jTextFieldNome;
     protected javax.swing.JTextField jTextFieldNumero;

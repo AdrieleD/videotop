@@ -24,5 +24,15 @@ public enum TipoUsuario {
     public int getTiposUsuario() {
         return this.tiposUsuario;
     }
+    
+    public static TipoUsuario getTipoUsuario (int idTU){
+        for (TipoUsuario tu : TipoUsuario.values()){
+            if(tu.getTiposUsuario()==idTU){
+                System.out.println(tu);
+                return tu;
+            }
+        }
+        return null;
+    }
 
 }

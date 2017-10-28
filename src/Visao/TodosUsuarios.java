@@ -8,7 +8,10 @@ package Visao;
 import Controle.ControladorUsuarios;
 import Modelo.TipoUsuario;
 import Modelo.Usuario;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -22,13 +25,16 @@ public class TodosUsuarios extends javax.swing.JFrame {
      * Creates new form TodosUsuarios
      */
     public TodosUsuarios(ControladorUsuarios controlador) {
+        
         this.controladorU=controlador;
         initComponents();
         javax.swing.table.DefaultTableModel val = (javax.swing.table.DefaultTableModel) jTableUsuarios.getModel();
-        ArrayList<Usuario> usuarios = controladorU.getUsuariosCadastrados();
+        ArrayList<Usuario> usuarios = controladorU.getUsuariosCadastrados("usuario");
         for(Usuario u : usuarios){
-             val.addRow(new Object[]{u.getNome(), u.getCpf(), u.getTipoUsuario().toString(), u.getTelefone()});
+             val.addRow(new Object[]{u.getNome(), u.getCpf(), u.getTipoUsuario().toString(), u.getTelefone(), u.getNascimento(), u.getEndereco().getCep()});
         }
+        //this.setSize(600, 600);
+        this.jTableUsuarios.setSize(500, 600);
     }
 
     /**
@@ -53,14 +59,14 @@ public class TodosUsuarios extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nome", "CPF", "Tipo Usuário", "Telefone"
+                "Nome", "CPF", "Tipo Usuário", "Telefone", "Data Nascimento", "CEP"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -92,14 +98,14 @@ public class TodosUsuarios extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 25, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addComponent(jButtonExcluir)
                 .addGap(30, 30, 30)
                 .addComponent(jButtonEditar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -119,11 +125,18 @@ public class TodosUsuarios extends javax.swing.JFrame {
         // TODO add your handling code here:
         javax.swing.table.DefaultTableModel val = (javax.swing.table.DefaultTableModel) jTableUsuarios.getModel();
         int i = jTableUsuarios.getSelectedRow();
-        if(i==-1)
-        System.out.println("Erro");
+        if(i==-1){
+            System.out.println("Erro");
+            JOptionPane.showMessageDialog(null, "Favor selecionar um cliente!", "", JOptionPane.ERROR_MESSAGE);
+        }
         else
         {
-            controladorU.removeUsuario(val.getValueAt(i, 1).toString());
+            try {
+                controladorU.removeUsuario(val.getValueAt(i, 1).toString());
+                JOptionPane.showMessageDialog(null, "Usuario excluido com sucesso", "", JOptionPane.INFORMATION_MESSAGE);
+            } catch (SQLException ex) {
+                Logger.getLogger(TodosUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+            }
             val.removeRow(i);
         }
     }//GEN-LAST:event_jButtonExcluirActionPerformed
@@ -136,12 +149,15 @@ public class TodosUsuarios extends javax.swing.JFrame {
         }
         else{
             CadastrarUsuario frame = new CadastrarUsuario(controladorU);
-            Usuario u = controladorU.buscaUsuario(jTableUsuarios.getValueAt(i, 1).toString());
+            Usuario u = null;
+            try {
+                u = controladorU.buscaUsuario(jTableUsuarios.getValueAt(i, 1).toString());
+            } catch (SQLException ex) {
+                Logger.getLogger(TodosUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+            }
             frame.jTextFieldNome.setText(u.getNome());
             frame.jTextFieldBairro.setText(u.getEndereco().getBairro());
             frame.jTextFieldCEP.setText(u.getEndereco().getCep());
-            frame.jTextFieldCidade.setText(u.getEndereco().getCidade());
-            frame.jTextFieldEstado.setText(u.getEndereco().getEstado());
             frame.jTextFieldLogradouro.setText(u.getEndereco().getLogradouro());
             frame.jTextFieldNumero.setText(Integer.toString(u.getEndereco().getNumero()));
             frame.jTextFieldTelefone.setText(u.getTelefone());

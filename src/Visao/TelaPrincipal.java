@@ -105,7 +105,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jButtonListarCLienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonListarCLienteActionPerformed
         // TODO add your handling code here:
-        for(Usuario u: controladorU.getUsuariosCadastrados()){
+        for(Usuario u: controladorU.getUsuariosCadastrados("usuario")){
             System.out.println(u.getNome() +" " + u.getCpf());
         }
         TodosUsuarios frame = new TodosUsuarios(controladorU);

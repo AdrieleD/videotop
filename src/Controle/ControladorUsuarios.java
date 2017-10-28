@@ -12,6 +12,8 @@ import Persistencia.ConexaoBanco;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -22,8 +24,13 @@ public class ControladorUsuarios {
     
     private ConexaoBanco conexaoBanco;
             
-    public ArrayList<Usuario> getUsuariosCadastrados() {
-        return usuariosCadastrados;
+    public ArrayList<Usuario> getUsuariosCadastrados(String nomeTabela) {
+        try {
+            return conexaoBanco.getCadastrados(nomeTabela);
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
     
     public ControladorUsuarios() throws SQLException{
@@ -31,14 +38,9 @@ public class ControladorUsuarios {
         usuariosCadastrados = new ArrayList ();
    }
     
-    public Usuario buscaUsuario(String cpf){
-        if(usuariosCadastrados.isEmpty())
-            return null;
-        for(Usuario u: usuariosCadastrados){
-            if(u.getCpf().equals(cpf))
-                return u;
-        }
-        return null;
+    public Usuario buscaUsuario(String cpf) throws SQLException{;
+        Usuario u = conexaoBanco.consultarUsuario(cpf);
+        return u;
     }
     
     public boolean cadastrarUsuario (String nome, String cpf, Date nascimento, String telefone, TipoUsuario tipoUsuario, Endereco endereco, String senha) throws SQLException{
@@ -61,10 +63,11 @@ public class ControladorUsuarios {
         return true;
     }
     
-    public boolean removeUsuario(String cpf){
+    public boolean removeUsuario(String cpf) throws SQLException{
         Usuario u=buscaUsuario(cpf);
         if(u != null){
             System.out.println("Usuário existe!");
+            conexaoBanco.removeUsuario(cpf);
             usuariosCadastrados.remove(u);
             return true;
         }
@@ -75,7 +78,7 @@ public class ControladorUsuarios {
         }     
     }
     
-    public Usuario realizarLogin(String cpf, String senha){
+    public Usuario realizarLogin(String cpf, String senha) throws SQLException{
         Usuario u = buscaUsuario(cpf);
         if(u!=null){
             if(u.getSenha().equals(senha)){
@@ -83,6 +86,10 @@ public class ControladorUsuarios {
             }
         }
         return u;
+    }
+    
+    public int getTamanhoTabela() throws SQLException{
+        return conexaoBanco.getTamanhoTabela("usuario");
     }
         
 }

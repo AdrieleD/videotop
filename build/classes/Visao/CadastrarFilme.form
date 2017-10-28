@@ -72,7 +72,7 @@
                       <Component id="jTextFieldTitulo" min="-2" pref="383" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="22" pref="78" max="32767" attributes="0"/>
+              <EmptySpace min="22" pref="87" max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
@@ -178,13 +178,16 @@
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="4">
-            <StringItem index="0" value="Item 1"/>
-            <StringItem index="1" value="Item 2"/>
-            <StringItem index="2" value="Item 3"/>
-            <StringItem index="3" value="Item 4"/>
+            <StringItem index="0" value="A&#xe7;&#xe3;o"/>
+            <StringItem index="1" value="Aventura"/>
+            <StringItem index="2" value="Er&#xf3;tico"/>
+            <StringItem index="3" value="Terror"/>
           </StringArray>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboBoxgeneroActionPerformed"/>
+      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
@@ -193,10 +196,10 @@
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="4">
-            <StringItem index="0" value="Item 1"/>
-            <StringItem index="1" value="Item 2"/>
-            <StringItem index="2" value="Item 3"/>
-            <StringItem index="3" value="Item 4"/>
+            <StringItem index="0" value="Disney"/>
+            <StringItem index="1" value="Paramount"/>
+            <StringItem index="2" value="Sony"/>
+            <StringItem index="3" value="Warner Bros"/>
           </StringArray>
         </Property>
       </Properties>
@@ -208,10 +211,10 @@
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="4">
-            <StringItem index="0" value="Item 1"/>
-            <StringItem index="1" value="Item 2"/>
-            <StringItem index="2" value="Item 3"/>
-            <StringItem index="3" value="Item 4"/>
+            <StringItem index="0" value="John Travolta"/>
+            <StringItem index="1" value="Marlon Brando"/>
+            <StringItem index="2" value="Marilyn Monroe"/>
+            <StringItem index="3" value="Tom Hanks"/>
           </StringArray>
         </Property>
       </Properties>
@@ -227,11 +230,9 @@
     <Component class="javax.swing.JComboBox" name="jComboBoxClasseFilme">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="4">
-            <StringItem index="0" value="Item 1"/>
-            <StringItem index="1" value="Item 2"/>
-            <StringItem index="2" value="Item 3"/>
-            <StringItem index="3" value="Item 4"/>
+          <StringArray count="2">
+            <StringItem index="0" value="Livre"/>
+            <StringItem index="1" value="+18"/>
           </StringArray>
         </Property>
       </Properties>
