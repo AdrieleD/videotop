@@ -15,22 +15,26 @@ import java.util.Date;
 public class Filme {
     private int idFilme;
     private String titulo;
-    private ArrayList<Genero> generos = new ArrayList<>();
-    private ArrayList<Estudio> estudios = new ArrayList<>();
+    private Genero genero;
+    private Estudio estudio;
     private Date lancamento;
-    public ArrayList<Ator> ListaAtores = new ArrayList<>();
+    public Ator atorPrincipal;
     private int quantFitas;
     private int quantFitasDisp;
+    private String classe;
 
-    public Filme(int idFilme, String titulo, Date lancamento, int quantFitas, int quantFitasDisp) {
+    public Filme(int idFilme, String titulo, Genero genero, Estudio estudio, Date lancamento, Ator atorPrincipal, int quantFitas, int quantFitasDisp, String classe) {
         this.idFilme = idFilme;
         this.titulo = titulo;
+        this.genero = genero;
+        this.estudio = estudio;
         this.lancamento = lancamento;
+        this.atorPrincipal = atorPrincipal;
         this.quantFitas = quantFitas;
         this.quantFitasDisp = quantFitasDisp;
+        this.classe = classe;
     }
 
-    
     public int getIdFilme() {
         return idFilme;
     }
@@ -47,44 +51,20 @@ public class Filme {
         this.titulo = titulo;
     }
 
-    public ArrayList<Genero> getGenero() {
-        return generos;
+    public Genero getGenero() {
+        return genero;
     }
 
-    public void setListaGeneros(ArrayList<Genero> ListaGeneros) {
-        this.generos = ListaGeneros;
+    public void setGenero(Genero genero) {
+        this.genero = genero;
     }
 
-    public ArrayList<Estudio> getEstudio() {
-        return estudios;
+    public Estudio getEstudio() {
+        return estudio;
     }
 
-    public void setListaEstudios(ArrayList<Estudio> ListaEstudios) {
-        this.estudios = ListaEstudios;
-    }
-
-    public ArrayList<Ator> getListaAtores() {
-        return ListaAtores;
-    }
-
-    public void setListaAtores(ArrayList<Ator> ListaAtores) {
-        this.ListaAtores = ListaAtores;
-    }
-
-    public ArrayList<Genero> getGeneros() {
-        return generos;
-    }
-
-    public void setGeneros(ArrayList<Genero> generos) {
-        this.generos = generos;
-    }
-
-    public ArrayList<Estudio> getEstudios() {
-        return estudios;
-    }
-
-    public void setEstudios(ArrayList<Estudio> estudios) {
-        this.estudios = estudios;
+    public void setEstudio(Estudio estudio) {
+        this.estudio = estudio;
     }
 
     public Date getLancamento() {
@@ -93,6 +73,14 @@ public class Filme {
 
     public void setLancamento(Date lancamento) {
         this.lancamento = lancamento;
+    }
+
+    public Ator getAtorPrincipal() {
+        return atorPrincipal;
+    }
+
+    public void setAtorPrincipal(Ator atorPrincipal) {
+        this.atorPrincipal = atorPrincipal;
     }
 
     public int getQuantFitas() {
@@ -107,9 +95,21 @@ public class Filme {
         return quantFitasDisp;
     }
 
-    public void setQuantFitasDisp() {
-        this.quantFitasDisp = quantFitasDisp - 1;
+    public void setQuantFitasDisp(int quantFitasDisp) {
+        this.quantFitasDisp = quantFitasDisp;
     }
+
+    public String getClasse() {
+        return classe;
+    }
+
+    public void setClasse(String classe) {
+        this.classe = classe;
+    }
+
+    
+
+   
     
     
 }

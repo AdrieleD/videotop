@@ -5,8 +5,13 @@
  */
 package Visao;
 
+import Controle.ControladorFilmes;
 import Controle.ControladorUsuarios;
+import Modelo.TipoUsuario;
 import Modelo.Usuario;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /**
@@ -18,12 +23,24 @@ public class TelaPrincipal extends javax.swing.JFrame {
     /**
      * Creates new form TelaPrincipal
      */
-    public TelaPrincipal(ControladorUsuarios controlador, Usuario u) {
+    public TelaPrincipal(ControladorUsuarios controlador, Usuario u, ControladorFilmes controlador2) {
         this.controladorU=controlador;
+        this.controladorF=controlador2;
         this.u=u;
         initComponents();
         jLabelBemvindo.setText("Bem-vindo(a) "+u.getNome());
-        
+         switch (u.getTipoUsuario()){
+                case ATENDENTE:
+                    jButtonCadastrarFuncionario.setVisible(false);
+                    jButtonListarFuncionarios.setVisible(false);
+                    break;
+                case GERENTE:
+                    jButtonCadastrarFuncionario.setVisible(true);
+                    jButtonListarFuncionarios.setVisible(true);
+                    break;
+                default:
+                    new realizaEmprestimo(controladorF, u).setVisible(true);
+            }
     }
 
     /**
@@ -40,13 +57,25 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jButtonListarFilmes = new javax.swing.JButton();
         jButtonCadastrarCliente = new javax.swing.JButton();
         jButtonListarCLiente = new javax.swing.JButton();
+        jButtonCadastrarFuncionario = new javax.swing.JButton();
+        jButtonListarFuncionarios = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
         jButtonCFilme.setText("Cadastrar Filme");
+        jButtonCFilme.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCFilmeActionPerformed(evt);
+            }
+        });
 
         jButtonListarFilmes.setText("Listar Filmes");
+        jButtonListarFilmes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonListarFilmesActionPerformed(evt);
+            }
+        });
 
         jButtonCadastrarCliente.setText("Cadastrar Cliente");
         jButtonCadastrarCliente.addActionListener(new java.awt.event.ActionListener() {
@@ -62,6 +91,20 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jButtonCadastrarFuncionario.setText("Cadastrar  Funcionario");
+        jButtonCadastrarFuncionario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCadastrarFuncionarioActionPerformed(evt);
+            }
+        });
+
+        jButtonListarFuncionarios.setText("Listar Funcionarios");
+        jButtonListarFuncionarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonListarFuncionariosActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -70,15 +113,19 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addComponent(jLabelBemvindo, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButtonCFilme, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonListarFilmes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(29, 29, 29)
+                    .addComponent(jButtonListarFilmes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonCFilme, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButtonCadastrarCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButtonListarCLiente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(137, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonCadastrarFuncionario, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButtonListarFuncionarios, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -87,12 +134,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addGap(131, 131, 131)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonCFilme)
-                    .addComponent(jButtonCadastrarCliente))
-                .addGap(18, 18, 18)
+                    .addComponent(jButtonCadastrarCliente)
+                    .addComponent(jButtonCadastrarFuncionario))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonListarFilmes)
-                    .addComponent(jButtonListarCLiente))
-                .addGap(0, 78, Short.MAX_VALUE))
+                    .addComponent(jButtonListarCLiente)
+                    .addComponent(jButtonListarFuncionarios))
+                .addGap(0, 34, Short.MAX_VALUE))
         );
 
         pack();
@@ -100,7 +149,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jButtonCadastrarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCadastrarClienteActionPerformed
         // TODO add your handling code here:
-        new CadastrarUsuario(controladorU).setVisible(true);
+        CadastrarUsuario frame = new CadastrarUsuario(controladorU, u, false);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }//GEN-LAST:event_jButtonCadastrarClienteActionPerformed
 
     private void jButtonListarCLienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonListarCLienteActionPerformed
@@ -108,22 +159,55 @@ public class TelaPrincipal extends javax.swing.JFrame {
         for(Usuario u: controladorU.getUsuariosCadastrados("usuario")){
             System.out.println(u.getNome() +" " + u.getCpf());
         }
-        TodosUsuarios frame = new TodosUsuarios(controladorU);
+        TodosUsuarios frame = new TodosUsuarios(controladorU, u, false);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }//GEN-LAST:event_jButtonListarCLienteActionPerformed
+
+    private void jButtonCFilmeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCFilmeActionPerformed
+        try {
+            // TODO add your handling code here:
+            new CadastrarFilme(controladorF).setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButtonCFilmeActionPerformed
+
+    private void jButtonCadastrarFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCadastrarFuncionarioActionPerformed
+        // TODO add your handling code here:
+        CadastrarUsuario frame = new CadastrarUsuario(controladorU, u, true);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+    }//GEN-LAST:event_jButtonCadastrarFuncionarioActionPerformed
+
+    private void jButtonListarFuncionariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonListarFuncionariosActionPerformed
+        // TODO add your handling code here:
+        TodosUsuarios frame = new TodosUsuarios(controladorU, u, true);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+    }//GEN-LAST:event_jButtonListarFuncionariosActionPerformed
+
+    private void jButtonListarFilmesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonListarFilmesActionPerformed
+        // TODO add your handling code here:
+        TodosFilmes frame = new TodosFilmes(controladorF, u);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+    }//GEN-LAST:event_jButtonListarFilmesActionPerformed
 
     /**
      * @param args the command line arguments
      */
     private ControladorUsuarios controladorU;
+    private ControladorFilmes controladorF;
     private Usuario u;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCFilme;
     private javax.swing.JButton jButtonCadastrarCliente;
+    private javax.swing.JButton jButtonCadastrarFuncionario;
     private javax.swing.JButton jButtonListarCLiente;
     private javax.swing.JButton jButtonListarFilmes;
+    private javax.swing.JButton jButtonListarFuncionarios;
     private javax.swing.JLabel jLabelBemvindo;
     // End of variables declaration//GEN-END:variables
 }

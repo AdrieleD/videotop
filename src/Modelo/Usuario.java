@@ -5,7 +5,9 @@
  */
 package Modelo;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  *
@@ -20,6 +22,7 @@ public class Usuario {
     private TipoUsuario tipoUsuario;
     private Endereco endereco;
     private String senha;
+    private String classe;
 
     public Usuario(String nome, String cpf, Date nascimento, String telefone, TipoUsuario tipoUsuario, Endereco endereco, String senha) {
         this.nome = nome;
@@ -29,6 +32,34 @@ public class Usuario {
         this.tipoUsuario = tipoUsuario;
         this.endereco = endereco;
         this.senha = senha;
+        switch(tipoUsuario){
+            case GERENTE:
+                this.classe="AS";
+                break;
+           case ATENDENTE:
+                this.classe="S";
+                break;
+           case CLIENTE:
+                this.classe="C";
+                break;
+           default:
+               if(this.calculaIdade(nascimento)>=18)
+                   this.classe="C";
+               else
+                   this.classe="U";               
+        }
+    }
+
+    public String getClasse() {
+        return classe;
+    }
+    
+    private int calculaIdade(Date nascimento){
+        Calendar dataNasc = new GregorianCalendar();
+        dataNasc.setTime(nascimento);
+        Calendar hoje = Calendar.getInstance();
+        int idade = hoje.get(Calendar.YEAR) - dataNasc.get(Calendar.YEAR);
+        return idade;        
     }
 
     public String getSenha() {

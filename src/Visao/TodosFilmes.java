@@ -5,6 +5,17 @@
  */
 package Visao;
 
+import Controle.ControladorFilmes;
+import Modelo.Filme;
+import Modelo.TipoUsuario;
+import Modelo.Usuario;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author JW
@@ -14,8 +25,25 @@ public class TodosFilmes extends javax.swing.JFrame {
     /**
      * Creates new form TodosFilmes
      */
-    public TodosFilmes() {
+    public TodosFilmes(ControladorFilmes controlador, Usuario u) throws ParseException {
         initComponents();
+        this.controladorF=controlador;
+        this.usuario=u;
+        javax.swing.table.DefaultTableModel val = (javax.swing.table.DefaultTableModel) jTableTodosFilmes.getModel();
+        ArrayList<Filme> filmes = controladorF.getFilmesCadastrados();
+        for(Filme f : filmes){
+                    if(u.getClasse().equals("U")){
+                        if(f.getClasse().equals(u.getClasse()))
+                            val.addRow(new Object[]{f.getIdFilme(), f.getTitulo(), f.getLancamento().getYear()+1900}); //soma 1900 por causa da funçao getYear
+                    }
+                    else
+                        val.addRow(new Object[]{f.getIdFilme(), f.getTitulo(), f.getLancamento().getYear()+1900}); //soma 1900 por causa da funçao getYear
+         }
+        if(u.getTipoUsuario()== TipoUsuario.CLIENTE || u.getTipoUsuario()== TipoUsuario.DEPENDENTE )
+            jButtonExcluir.setVisible(false);
+        this.jTableTodosFilmes.getColumnModel().getColumn(0).setPreferredWidth(50);
+        this.jTableTodosFilmes.getColumnModel().getColumn(1).setPreferredWidth(200);
+        this.jTableTodosFilmes.getColumnModel().getColumn(2).setPreferredWidth(70);
     }
 
     /**
@@ -27,57 +55,96 @@ public class TodosFilmes extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTableTodosFilmes = new javax.swing.JTable();
+        jButtonExcluir = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jTableTodosFilmes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "idFilme", "Titulo", "Ano"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(jTableTodosFilmes);
+
+        jButtonExcluir.setText("Excluir");
+        jButtonExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonExcluirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButtonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonExcluir)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
+        // TODO add your handling code here:
+        javax.swing.table.DefaultTableModel val = (javax.swing.table.DefaultTableModel) jTableTodosFilmes.getModel();
+        int i = jTableTodosFilmes.getSelectedRow();
+        if(i==-1){
+            System.out.println("Erro");
+            JOptionPane.showMessageDialog(null, "Favor selecionar um filme!", "", JOptionPane.ERROR_MESSAGE);
+        }
+        else
+        {
+            try {
+                controladorF.removeFilmeBanco(Integer.parseInt(val.getValueAt(i, 0).toString()));
+            } catch (SQLException ex) {
+                Logger.getLogger(TodosFilmes.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            JOptionPane.showMessageDialog(null, "Filme excluido com sucesso", "", JOptionPane.INFORMATION_MESSAGE);
+            val.removeRow(i);
+        }
+    }//GEN-LAST:event_jButtonExcluirActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TodosFilmes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TodosFilmes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TodosFilmes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TodosFilmes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+   
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new TodosFilmes().setVisible(true);
-            }
-        });
-    }
-
+    private ControladorFilmes controladorF;
+    private Usuario usuario;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonExcluir;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTableTodosFilmes;
     // End of variables declaration//GEN-END:variables
 }

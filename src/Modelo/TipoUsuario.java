@@ -10,10 +10,10 @@ package Modelo;
  * @author adriele
  */
 public enum TipoUsuario {
-    CLIENTE(0),
-    DEPENDENTE(1),
+    GERENTE(1),
     ATENDENTE(2),
-    GERENTE(3);
+    CLIENTE(3),
+    DEPENDENTE(4);
     
     private final int tiposUsuario;
 

@@ -5,7 +5,11 @@
  */
 package Persistencia;
 
+import Modelo.Ator;
 import Modelo.Endereco;
+import Modelo.Estudio;
+import Modelo.Filme;
+import Modelo.Genero;
 import Modelo.TipoUsuario;
 import Modelo.Usuario;
 import java.sql.DriverManager;
@@ -42,12 +46,7 @@ public class ConexaoBanco  {
     }
     
     public boolean  insertUsuario(String nome, String cpf, Date nascimento, String telefone, TipoUsuario tipoUsuario, Endereco endereco, String senha) throws SQLException{
-        DateFormat df= new SimpleDateFormat("yyyy-mm-dd");
-        try {
-            nascimento=df.parse("1996-02-14");
-        } catch (ParseException ex) {
-            Logger.getLogger(ConexaoBanco.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        java.sql.Date data = new java.sql.Date(nascimento.getTime());
         cpf=cpf.replace(".", "");
         cpf=cpf.replace("-", "");
         sql = "INSERT INTO usuario (cpf,senha,nome,dataNascimento,logradouro,numero,bairro,cep,telefone, idtipoUsuario)VALUES(?,?,?,?,?,?,?,?,?,?)";
@@ -55,7 +54,7 @@ public class ConexaoBanco  {
                     stmt.setString(1, cpf);
                     stmt.setString(2, senha);
                     stmt.setString(3, nome);
-                    stmt.setString(4, "1996-02-14");
+                    stmt.setDate(4, data);
                     stmt.setString(5, endereco.getLogradouro());
                     stmt.setString(6, Integer.toString( endereco.getNumero()));
                     stmt.setString(7, endereco.getBairro());
@@ -68,6 +67,18 @@ public class ConexaoBanco  {
                 
                 return  true;
     } 
+    
+    public boolean insertFilme(String titulo, String ano, String classe) throws SQLException{
+        System.out.println(ano);
+        sql = "INSERT INTO filme (titulo,ano,filmeTC)VALUES(?,?,?)";
+        stmt = conexao.prepareStatement(sql);
+        stmt.setString(1, titulo);
+        stmt.setString(2, ano);
+        stmt.setString(3, classe);
+        stmt.execute();
+        stmt.close();
+        return false;
+    }
     
     public Usuario consultarUsuario(String cpf) throws SQLException{
         cpf=cpf.replace(".", "");
@@ -87,6 +98,16 @@ public class ConexaoBanco  {
         return u;
     }
     
+    public int consultarFilme(int idFilme) throws SQLException{
+        sql = "SELECT idFilme FROM filme WHERE idfilme="+idFilme;
+        st = conexao.createStatement();
+        rs = st.executeQuery(sql);
+        while(rs.next()){
+            return rs.getInt("idfilme");
+        }
+        return 0;
+    }
+    
     public boolean realizarEmprestimo(int idFilme, String cpf, Date dataEmprestimo, Date dataDevolucao, float valor){
         cpf=cpf.replace(".", "");
         cpf=cpf.replace("-", "");
@@ -99,6 +120,14 @@ public class ConexaoBanco  {
         cpf=cpf.replace(".", "");
         cpf=cpf.replace("-", "");
         sql="DELETE FROM usuario WHERE cpf='"+cpf+"'";
+        st = conexao.createStatement();
+        st.executeUpdate(sql);
+        st.close();
+        return true;
+    }
+    
+     public boolean removeFilme(int  idFilme) throws SQLException{
+        sql="DELETE FROM filme WHERE idfilme="+idFilme;
         st = conexao.createStatement();
         st.executeUpdate(sql);
         st.close();
@@ -131,4 +160,68 @@ public class ConexaoBanco  {
         return usuariosCadastrados;        
     }
     //criar método para atualizar banco de dados
+    
+    public ArrayList<Ator> getAtores() throws SQLException{
+        ArrayList<Ator> atoresCadastrados = new ArrayList();
+        Ator a =null;
+        sql = "SELECT * from ator";
+        st = conexao.createStatement();
+        rs = st.executeQuery(sql);
+        while(rs.next()){
+            a = new Ator(rs.getString("nome"), rs.getDate("dataNascimento"));
+            atoresCadastrados.add(a);
+        }
+        st.close();
+        return atoresCadastrados;
+    }
+    
+    public ArrayList<Genero> getGeneros() throws SQLException{
+        ArrayList<Genero> generosCadastrados = new ArrayList();
+        Genero g =null;
+        sql = "SELECT * from genero";
+        st = conexao.createStatement();
+        rs = st.executeQuery(sql);
+        while(rs.next()){
+            g = new Genero(rs.getString("nome"), rs.getString("descricao"));
+            generosCadastrados.add(g);
+        }
+        st.close();
+        return generosCadastrados;
+    }
+    
+    public ArrayList<Estudio> getEstudios() throws SQLException{
+        ArrayList<Estudio> estudiosCadastrados = new ArrayList();
+        Estudio e =null;
+        sql = "SELECT * from estudio";
+        st = conexao.createStatement();
+        rs = st.executeQuery(sql);
+        while(rs.next()){
+            e = new Estudio(rs.getString("nome"), rs.getString("sede"));
+            estudiosCadastrados.add(e);
+        }
+        st.close();
+        return estudiosCadastrados;
+    }
+    
+    public ArrayList<Filme> getFilmesCadastrados()throws SQLException, ParseException{
+        ArrayList<Filme> filmesCadastrados = new ArrayList();
+        Filme f = null;
+        //sql = "SELECT * from filme JOIN fita ON filme.idfilme=fita.idfilme";
+        sql="SELECT idFilme, titulo, ano, filmeTC FROM filme";
+        st = conexao.createStatement();
+        rs = st.executeQuery(sql);
+        Genero g = null;
+        Estudio e = null;
+        Ator a = null;
+        DateFormat df = new SimpleDateFormat("yyyy");
+        Date d = new Date();
+        while(rs.next()){
+            d = df.parse(rs.getString("ano"));
+            f = new Filme(rs.getInt("idFilme"), rs.getString("titulo"), g, e, d, a,0,0, rs.getString("filmeTC") );
+            filmesCadastrados.add(f);
+        }
+        st.close();
+        return filmesCadastrados;
+    }
+    
 }

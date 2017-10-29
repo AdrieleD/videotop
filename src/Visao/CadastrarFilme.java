@@ -5,9 +5,24 @@
  */
 package Visao;
 
+import Controle.ControladorFilmes;
+import Modelo.Ator;
+import Modelo.Endereco;
+import Modelo.Estudio;
+import Modelo.Filme;
+import Modelo.Genero;
+import Persistencia.ConexaoBanco;
+import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.input.DataFormat;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.text.MaskFormatter;
 
 /**
@@ -19,13 +34,23 @@ public class CadastrarFilme extends javax.swing.JFrame {
     /**
      * Creates new form CadastrarFilme
      */
-    public CadastrarFilme() {
+    public CadastrarFilme(ControladorFilmes controlador) throws SQLException {
         initComponents();
-        try {
-            MaskFormatter mask   = new MaskFormatter( "##/##/####" );
-            mask.install(jFormattedTextFielddataFilme);
-        } catch (ParseException ex) {
-            Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
+        ArrayList<Ator>  atores = new ArrayList();
+        ArrayList<Genero>  generos = new ArrayList();
+        ArrayList<Estudio>  estudios = new ArrayList();
+        this.controladorF=controlador;
+        atores=controladorF.getAtores();
+        generos=controladorF.getGeneros();
+        estudios=controladorF.getEstudios();
+        for(Ator a : atores){
+            jComboBoxator.addItem(a.getNome());
+        }
+        for(Genero g: generos){
+            jComboBoxgenero.addItem(g.getNome());
+        }
+        for(Estudio e: estudios){
+            jComboBoxestudio.addItem(e.getNome());
         }
     }
 
@@ -42,7 +67,6 @@ public class CadastrarFilme extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jTextFieldTitulo = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jFormattedTextFielddataFilme = new javax.swing.JFormattedTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -55,6 +79,7 @@ public class CadastrarFilme extends javax.swing.JFrame {
         jComboBoxClasseFilme = new javax.swing.JComboBox<>();
         jButtonOk = new javax.swing.JButton();
         jButtonCancelar = new javax.swing.JButton();
+        jTextFielddata = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -68,7 +93,7 @@ public class CadastrarFilme extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("Data de Lançamento: ");
+        jLabel2.setText("Ano: ");
 
         jLabel3.setText("Genêro:");
 
@@ -89,8 +114,6 @@ public class CadastrarFilme extends javax.swing.JFrame {
 
         jComboBoxestudio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Disney", "Paramount", "Sony", "Warner Bros" }));
 
-        jComboBoxator.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "John Travolta", "Marlon Brando", "Marilyn Monroe", "Tom Hanks" }));
-
         jTextFieldquantfitas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldquantfitasActionPerformed(evt);
@@ -100,8 +123,18 @@ public class CadastrarFilme extends javax.swing.JFrame {
         jComboBoxClasseFilme.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Livre", "+18" }));
 
         jButtonOk.setText("Cadastrar");
+        jButtonOk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonOkActionPerformed(evt);
+            }
+        });
 
         jButtonCancelar.setText("Cancelar");
+        jButtonCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -113,24 +146,24 @@ public class CadastrarFilme extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(40, 40, 40)
+                                .addComponent(jTextFielddata))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addGap(18, 18, 18)
                                 .addComponent(jComboBoxator, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jComboBoxestudio, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBoxgenero, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jFormattedTextFielddataFilme, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(29, 29, 29)
+                                .addComponent(jComboBoxgenero, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(39, 39, 39)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel6)
@@ -144,7 +177,7 @@ public class CadastrarFilme extends javax.swing.JFrame {
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextFieldTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(22, 87, Short.MAX_VALUE))
+                .addGap(22, 88, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButtonOk)
@@ -163,9 +196,9 @@ public class CadastrarFilme extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jFormattedTextFielddataFilme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextFieldquantfitas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldquantfitas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFielddata, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -202,10 +235,45 @@ public class CadastrarFilme extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBoxgeneroActionPerformed
 
+    private void jButtonOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOkActionPerformed
+        // TODO add your handling code here:
+        this.id++;
+       String classe;
+       Date da = null, dfilme;
+       dfilme = new Date();
+       SimpleDateFormat df = new SimpleDateFormat("yyyy");
+       if(jComboBoxClasseFilme.getSelectedItem().toString().equals("Livre"))
+           classe = "U";
+       else
+           classe = "C";
+        try {
+            dfilme =df.parse(jTextFielddata.getText());
+        } catch (ParseException ex) {
+            Logger.getLogger(CadastrarFilme.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Genero g = new Genero(jComboBoxgenero.getSelectedItem().toString(), jComboBoxgenero.getSelectedItem().toString());
+        Estudio e = new Estudio(jComboBoxestudio.getSelectedItem().toString(), jComboBoxestudio.getSelectedItem().toString());;
+        Ator atorPrincipal = new Ator(jComboBoxator.getSelectedItem().toString(), da);
+        try {
+            controladorF.cadastrarFilme(id, jTextFieldTitulo.getText(),g,e,  dfilme,atorPrincipal, Integer.parseInt(jTextFieldquantfitas.getText()), Integer.parseInt(jTextFieldquantfitas.getText()), classe);
+            JOptionPane.showMessageDialog(null, "Filme cadastrado com sucesso", "", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException ex) {
+            Logger.getLogger(CadastrarFilme.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Erro ao cadastrar filme", "", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonOkActionPerformed
+
+    private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarActionPerformed
+        // TODO add your handling code here:
+        jTextFieldTitulo.setText("");
+        jTextFielddata.setText("");
+    }//GEN-LAST:event_jButtonCancelarActionPerformed
+
     /**
      * @param args the command line arguments
      */
-
+    private ControladorFilmes controladorF;
+    private int id=1;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCancelar;
     private javax.swing.JButton jButtonOk;
@@ -213,7 +281,6 @@ public class CadastrarFilme extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBoxator;
     private javax.swing.JComboBox<String> jComboBoxestudio;
     private javax.swing.JComboBox<String> jComboBoxgenero;
-    private javax.swing.JFormattedTextField jFormattedTextFielddataFilme;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -223,6 +290,7 @@ public class CadastrarFilme extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabelCadastrarFilme;
     private javax.swing.JTextField jTextFieldTitulo;
+    private javax.swing.JTextField jTextFielddata;
     private javax.swing.JTextField jTextFieldquantfitas;
     // End of variables declaration//GEN-END:variables
 }

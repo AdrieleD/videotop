@@ -57,9 +57,7 @@ public class ControladorUsuarios {
         Usuario usuario = new Usuario(nome, cpf, nascimento, telefone, tipoUsuario, endereco, senha);
         usuariosCadastrados.add(usuario);
         conexaoBanco.insertUsuario(nome, cpf, nascimento, telefone, tipoUsuario, endereco, senha);
-        System.out.println("Usuario Cadastrado com sucesso");
-        System.out.println(usuario.getCpf() +" "+usuario.getSenha());
-        
+        System.out.println("Usuario Cadastrado com sucesso");        
         return true;
     }
     
@@ -80,12 +78,13 @@ public class ControladorUsuarios {
     
     public Usuario realizarLogin(String cpf, String senha) throws SQLException{
         Usuario u = buscaUsuario(cpf);
-        if(u!=null){
-            if(u.getSenha().equals(senha)){
+       if(u.getSenha().equals(senha)){
                 System.out.println("Login realizado com sucesso!");
+                return u;
             }
-        }
-        return u;
+       else
+           return null;
+        
     }
     
     public int getTamanhoTabela() throws SQLException{

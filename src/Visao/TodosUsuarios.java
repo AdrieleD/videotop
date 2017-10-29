@@ -24,18 +24,31 @@ public class TodosUsuarios extends javax.swing.JFrame {
     /**
      * Creates new form TodosUsuarios
      */
-    public TodosUsuarios(ControladorUsuarios controlador) {
-        
+    public TodosUsuarios(ControladorUsuarios controlador, Usuario usuario, boolean todosFuncionarios) {
         this.controladorU=controlador;
+        this.usuario = usuario;
         initComponents();
         javax.swing.table.DefaultTableModel val = (javax.swing.table.DefaultTableModel) jTableUsuarios.getModel();
         ArrayList<Usuario> usuarios = controladorU.getUsuariosCadastrados("usuario");
-        for(Usuario u : usuarios){
-             val.addRow(new Object[]{u.getNome(), u.getCpf(), u.getTipoUsuario().toString(), u.getTelefone(), u.getNascimento(), u.getEndereco().getCep()});
+        if(todosFuncionarios){
+            for(Usuario u : usuarios){
+                    if(u.getTipoUsuario()==TipoUsuario.GERENTE || u.getTipoUsuario()==TipoUsuario.ATENDENTE)
+                        val.addRow(new Object[]{u.getNome(), u.getCpf(), u.getTipoUsuario().toString(), u.getTelefone(), u.getNascimento(), u.getEndereco().getCep()});
+                    else
+                        continue;
+                    }
         }
+            else{
+                    for(Usuario u : usuarios){
+                    if(u.getTipoUsuario()==TipoUsuario.CLIENTE || u.getTipoUsuario()==TipoUsuario.DEPENDENTE)
+                        val.addRow(new Object[]{u.getNome(), u.getCpf(), u.getTipoUsuario().toString(), u.getTelefone(), u.getNascimento(), u.getEndereco().getCep()});
+                    else
+                        continue;
+                    }
+           }
         //this.setSize(600, 600);
         this.jTableUsuarios.setSize(500, 600);
-    }
+ }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -145,10 +158,14 @@ public class TodosUsuarios extends javax.swing.JFrame {
         // TODO add your handling code here:
         int i = jTableUsuarios.getSelectedRow();
        if(i==-1){
-            JOptionPane.showMessageDialog(null,"Favor selecionar um cliente!");
+            JOptionPane.showMessageDialog(null,"Favor selecionar um cliente!","",JOptionPane.ERROR_MESSAGE);
         }
         else{
-            CadastrarUsuario frame = new CadastrarUsuario(controladorU);
+           CadastrarUsuario frame;
+           if(usuario.getTipoUsuario()==TipoUsuario.ATENDENTE)
+               frame = new CadastrarUsuario(controladorU, usuario, false);
+           else
+                 frame = new CadastrarUsuario(controladorU, usuario, true);
             Usuario u = null;
             try {
                 u = controladorU.buscaUsuario(jTableUsuarios.getValueAt(i, 1).toString());
@@ -177,6 +194,7 @@ public class TodosUsuarios extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     private ControladorUsuarios controladorU;
+    private Usuario usuario;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonEditar;

@@ -5,9 +5,17 @@
  */
 package Controle;
 
+import Modelo.Ator;
+import Modelo.Estudio;
 import Modelo.Filme;
+import Modelo.Genero;
+import Persistencia.ConexaoBanco;
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -15,7 +23,21 @@ import java.util.Date;
  */
 public class ControladorFilmes {
     private ArrayList<Filme> filmesCadastrados = new ArrayList ();
+    private ConexaoBanco conexaoBanco;
     
+    public ControladorFilmes() throws SQLException{
+        conexaoBanco = new ConexaoBanco();
+        filmesCadastrados = new ArrayList ();
+   }
+    
+    public ArrayList<Filme> getFilmesCadastrados() throws ParseException {
+        try {
+            return conexaoBanco.getFilmesCadastrados();
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
     
     public Filme buscaFilme(int idFilme){
         for(Filme u: filmesCadastrados){
@@ -25,7 +47,7 @@ public class ControladorFilmes {
         return null;
     }
     
-    public boolean cadastrarFilme (int idFilme, String titulo, Date lancamento, int quantFitas){
+    public boolean cadastrarFilme (int idFilme, String titulo, Genero genero, Estudio estudio, Date lancamento, Ator atorPrincipal, int quantFitas, int quantFitasDisp, String classe) throws SQLException{
         if(titulo.equals(""))
         {
             return false;
@@ -35,8 +57,10 @@ public class ControladorFilmes {
             System.out.println("Filme já existe!");
             return false;
         }
-        Filme filme = new Filme(idFilme, titulo, lancamento, quantFitas, quantFitas);
+        Filme filme = new Filme(idFilme, titulo,  genero, estudio,  lancamento, atorPrincipal,  quantFitas, quantFitasDisp, classe);
         filmesCadastrados.add(filme);
+        conexaoBanco.insertFilme(titulo, Integer.toString(lancamento.getYear()+1900), classe);
+        System.out.println("Usuario Cadastrado com sucesso");  
         return true;
     }
     
@@ -54,10 +78,15 @@ public class ControladorFilmes {
         }     
     }
     
+    public boolean removeFilmeBanco(int idFilme) throws SQLException{
+        conexaoBanco.removeFilme(idFilme);
+        return false;
+    }
+    
     public boolean diminuiQtdFilmes(int idFilme){
         Filme u=buscaFilme(idFilme);
         if(u != null){
-            u.setQuantFitasDisp();
+            //u.setQuantFitasDisp();
             return true;
         }
         else
@@ -84,4 +113,15 @@ public class ControladorFilmes {
         }
     }
     
+    public ArrayList<Ator> getAtores() throws SQLException{
+        return conexaoBanco.getAtores();
+    }
+    
+    public ArrayList<Genero> getGeneros() throws SQLException{
+        return conexaoBanco.getGeneros();
+    }
+    
+    public ArrayList<Estudio> getEstudios() throws SQLException{
+        return conexaoBanco.getEstudios();
+    }
 }

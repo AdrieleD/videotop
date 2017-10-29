@@ -11,9 +11,9 @@ package Modelo;
  */
 public class Estudio {
     private String nome;
-    private Endereco sede;
+    private String sede;
 
-    public Estudio(String nome, Endereco sede) {
+    public Estudio(String nome, String sede) {
         this.nome = nome;
         this.sede = sede;
     }
@@ -26,11 +26,13 @@ public class Estudio {
         this.nome = nome;
     }
 
-    public Endereco getEndereco() {
+    public String getSede() {
         return sede;
     }
 
-    public void setEndereco(Endereco sede) {
+    public void setSede(String sede) {
         this.sede = sede;
     }
+
+    
 }

@@ -5,6 +5,7 @@
  */
 package Visao;
 
+import Controle.ControladorFilmes;
 import Controle.ControladorUsuarios;
 import Modelo.Endereco;
 import Modelo.TipoUsuario;
@@ -30,6 +31,7 @@ public class TelaLogin extends javax.swing.JFrame {
      */
     public TelaLogin() throws SQLException {
         this.controladorU = new ControladorUsuarios();
+        this.controladorF = new ControladorFilmes();
         initComponents();
         try {
             MaskFormatter mask   = new MaskFormatter( "###.###.###-##" );
@@ -123,10 +125,16 @@ public class TelaLogin extends javax.swing.JFrame {
         }
         if(u!=null){
             System.out.println("Login realizado com sucesso");
+            System.out.println(u.getTipoUsuario());
             switch (u.getTipoUsuario()){
                 case ATENDENTE:
-                    new TelaPrincipal(controladorU, u).setVisible(true); //recebe o tipoUsuario para verificar qual tipo a interface vai abrir
+                    new TelaPrincipal(controladorU, u, controladorF).setVisible(true); //recebe o tipoUsuario para verificar qual tipo a interface vai abrir
                 break;
+                case GERENTE:
+                    new TelaPrincipal(controladorU, u, controladorF).setVisible(true); //recebe o tipoUsuario para verificar qual tipo a interface vai abrir
+                break;
+                default:
+                    new realizaEmprestimo(controladorF, u).setVisible(true);
             }
         }
         else
@@ -155,6 +163,7 @@ public class TelaLogin extends javax.swing.JFrame {
     }
 
     private ControladorUsuarios controladorU;
+    private ControladorFilmes controladorF;
             
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonEntrar;
