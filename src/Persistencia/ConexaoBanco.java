@@ -9,6 +9,7 @@ import Modelo.Ator;
 import Modelo.Endereco;
 import Modelo.Estudio;
 import Modelo.Filme;
+import Modelo.Funcionario;
 import Modelo.Genero;
 import Modelo.TipoUsuario;
 import Modelo.Usuario;
@@ -43,6 +44,19 @@ public class ConexaoBanco  {
         this.rs = null;
         this.st = null;
         this.conexao = DriverManager.getConnection("jdbc:mysql://localhost/videotopdb", "root", "foiprotpdetopicos");
+    }
+    
+    public boolean insertFuncionario(String cpf, float salario) throws SQLException{
+        cpf=cpf.replace(".", "");
+        cpf=cpf.replace("-", "");
+        sql = "INSERT INTO funcionario (cpf,salario)VALUES(?,?)";
+                    stmt = conexao.prepareStatement(sql);
+                    stmt.setString(1, cpf);
+                    stmt.setFloat(2, salario);
+                    stmt.execute();
+                    stmt.close();
+            
+                    return true;
     }
     
     public boolean  insertUsuario(String nome, String cpf, Date nascimento, String telefone, TipoUsuario tipoUsuario, Endereco endereco, String senha) throws SQLException{
@@ -142,12 +156,12 @@ public class ConexaoBanco  {
             return rs.getInt("totaltuplas");
     }
     
-    public ArrayList<Usuario> getCadastrados(String nomeTabela) throws SQLException{
+    public ArrayList<Usuario> getCadastrados() throws SQLException{
         ArrayList<Usuario> usuariosCadastrados = new ArrayList();
         Usuario u = null;
         Endereco e  = null;
         TipoUsuario tu = null;
-        sql = "SELECT * from "+nomeTabela;
+        sql = "SELECT * from usuario";
         st = conexao.createStatement();
         rs = st.executeQuery(sql);
         while(rs.next()){
@@ -158,6 +172,27 @@ public class ConexaoBanco  {
         }
         st.close();
         return usuariosCadastrados;        
+    }
+    
+     public ArrayList<Funcionario> getFuncCadastrados() throws SQLException{
+        ArrayList<Funcionario> funcionariosCadastrados = new ArrayList();
+        Funcionario f = null;
+        Endereco e  = null;
+        TipoUsuario tu = null;
+        sql = "SELECT * FROM videotopdb.funcionario NATURAL JOIN videotopdb.usuario";
+        st = conexao.createStatement();
+        rs = st.executeQuery(sql);
+        while(rs.next()){
+            e = new Endereco(rs.getString("logradouro"), rs.getInt("numero"), rs.getString("bairro"), rs.getString("cep"));
+            tu = TipoUsuario.getTipoUsuario(rs.getInt("idtipoUsuario"));
+            System.out.println("tu = " +tu);
+            f = new Funcionario(rs.getString("nome"), rs.getString("cpf"), rs.getDate("dataNascimento"), rs.getString("telefone"), tu, e, rs.getString("senha"), rs.getFloat("salario"));
+            funcionariosCadastrados.add(f);
+            System.out.println(rs.getInt("idtipoUsuario"));
+            System.out.println("no banco "+ f.getTipoUsuario());
+        }
+        st.close();
+        return funcionariosCadastrados;        
     }
     //criar método para atualizar banco de dados
     

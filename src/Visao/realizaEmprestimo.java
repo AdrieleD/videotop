@@ -233,7 +233,12 @@ public class realizaEmprestimo extends javax.swing.JFrame {
 
     private void jButtonListarFilmesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonListarFilmesActionPerformed
         // TODO add your handling code here:
-        TodosFilmes frame = new TodosFilmes(controladorF, u);
+        TodosFilmes frame = null;
+        try {
+            frame = new TodosFilmes(controladorF, u);
+        } catch (ParseException ex) {
+            Logger.getLogger(realizaEmprestimo.class.getName()).log(Level.SEVERE, null, ex);
+        }
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }//GEN-LAST:event_jButtonListarFilmesActionPerformed

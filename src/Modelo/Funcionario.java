@@ -16,9 +16,14 @@ public class Funcionario extends Usuario{
     private float Salario;
     
     public Funcionario(String nome, String cpf, Date nascimento, String telefone, TipoUsuario tipoUsuario, Endereco endereco, String senha, float salario) {
-        super(nome, cpf, nascimento, telefone, TipoUsuario.ATENDENTE, endereco, senha);
+        super(nome, cpf, nascimento, telefone, tipoUsuario, endereco, senha);
         this.Salario = salario;
     }
+
+    public float getSalario() {
+        return Salario;
+    }
+    
     
     
 }

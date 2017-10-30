@@ -6,6 +6,7 @@
 package Visao;
 
 import Controle.ControladorUsuarios;
+import Modelo.Funcionario;
 import Modelo.TipoUsuario;
 import Modelo.Usuario;
 import java.sql.SQLException;
@@ -19,33 +20,26 @@ import javax.swing.JOptionPane;
  *
  * @author JW
  */
-public class TodosUsuarios extends javax.swing.JFrame {
+public class TodosFuncionarios extends javax.swing.JFrame {
 
     /**
      * Creates new form TodosUsuarios
      */
-    public TodosUsuarios(ControladorUsuarios controlador, Usuario usuario, boolean todosFuncionarios) {
+    public TodosFuncionarios(ControladorUsuarios controlador, Usuario usuario) {
         this.controladorU=controlador;
         this.usuario = usuario;
         initComponents();
         javax.swing.table.DefaultTableModel val = (javax.swing.table.DefaultTableModel) jTableUsuarios.getModel();
-        ArrayList<Usuario> usuarios = controladorU.getUsuariosCadastrados("usuario");
-        if(todosFuncionarios){
-            for(Usuario u : usuarios){
-                    if(u.getTipoUsuario()==TipoUsuario.GERENTE || u.getTipoUsuario()==TipoUsuario.ATENDENTE)
-                        val.addRow(new Object[]{u.getNome(), u.getCpf(), u.getTipoUsuario().toString(), u.getTelefone(), u.getNascimento(), u.getEndereco().getCep()});
-                    else
-                        continue;
-                    }
-        }
-            else{
-                    for(Usuario u : usuarios){
-                    if(u.getTipoUsuario()==TipoUsuario.CLIENTE || u.getTipoUsuario()==TipoUsuario.DEPENDENTE)
-                        val.addRow(new Object[]{u.getNome(), u.getCpf(), u.getTipoUsuario().toString(), u.getTelefone(), u.getNascimento(), u.getEndereco().getCep()});
-                    else
-                        continue;
-                    }
-           }
+        ArrayList<Funcionario> funcionarios = controladorU.getFuncCadastrados();
+            for(Funcionario u : funcionarios){
+                    //if(u.getTipoUsuario()==TipoUsuario.GERENTE || u.getTipoUsuario()==TipoUsuario.ATENDENTE){
+                        val.addRow(new Object[]{u.getNome(), u.getCpf(), u.getTipoUsuario().toString(), u.getTelefone(), u.getNascimento(), u.getEndereco().getCep(),u.getSalario() });
+                        System.out.println("onde chega "+u.getTipoUsuario().toString());
+                    //}
+                    
+                    //else
+                       // continue;
+          }
         //this.setSize(600, 600);
         this.jTableUsuarios.setSize(500, 600);
  }
@@ -72,14 +66,14 @@ public class TodosUsuarios extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nome", "CPF", "Tipo Usuário", "Telefone", "Data Nascimento", "CEP"
+                "Nome", "CPF", "Tipo Usuário", "Telefone", "Data Nascimento", "CEP", "Salario"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -148,7 +142,7 @@ public class TodosUsuarios extends javax.swing.JFrame {
                 controladorU.removeUsuario(val.getValueAt(i, 1).toString());
                 JOptionPane.showMessageDialog(null, "Usuario excluido com sucesso", "", JOptionPane.INFORMATION_MESSAGE);
             } catch (SQLException ex) {
-                Logger.getLogger(TodosUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TodosFuncionarios.class.getName()).log(Level.SEVERE, null, ex);
             }
             val.removeRow(i);
         }
@@ -162,7 +156,7 @@ public class TodosUsuarios extends javax.swing.JFrame {
         }
         else{
            CadastrarUsuario frame;
-           if(usuario.getTipoUsuario()==TipoUsuario.ATENDENTE || usuario.getTipoUsuario()==TipoUsuario.GERENTE)
+           if(usuario.getTipoUsuario()==TipoUsuario.ATENDENTE)
                frame = new CadastrarUsuario(controladorU, usuario, false);
            else
                  frame = new CadastrarUsuario(controladorU, usuario, true);
@@ -170,7 +164,7 @@ public class TodosUsuarios extends javax.swing.JFrame {
             try {
                 u = controladorU.buscaUsuario(jTableUsuarios.getValueAt(i, 1).toString());
             } catch (SQLException ex) {
-                Logger.getLogger(TodosUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TodosFuncionarios.class.getName()).log(Level.SEVERE, null, ex);
             }
             frame.jTextFieldNome.setText(u.getNome());
             frame.jTextFieldBairro.setText(u.getEndereco().getBairro());

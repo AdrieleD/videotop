@@ -6,6 +6,7 @@
 package Controle;
 
 import Modelo.Endereco;
+import Modelo.Funcionario;
 import Modelo.TipoUsuario;
 import Modelo.Usuario;
 import Persistencia.ConexaoBanco;
@@ -26,7 +27,16 @@ public class ControladorUsuarios {
             
     public ArrayList<Usuario> getUsuariosCadastrados(String nomeTabela) {
         try {
-            return conexaoBanco.getCadastrados(nomeTabela);
+            return conexaoBanco.getCadastrados();
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public ArrayList<Funcionario> getFuncCadastrados() {
+        try {
+            return conexaoBanco.getFuncCadastrados();
         } catch (SQLException ex) {
             Logger.getLogger(ControladorUsuarios.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -41,6 +51,12 @@ public class ControladorUsuarios {
     public Usuario buscaUsuario(String cpf) throws SQLException{;
         Usuario u = conexaoBanco.consultarUsuario(cpf);
         return u;
+    }
+    
+    public boolean cadastrarFuncionario(String nome, String cpf, Date nascimento, String telefone, TipoUsuario tipoUsuario, Endereco endereco, String senha, float salario) throws SQLException{
+        cadastrarUsuario( nome,  cpf,  nascimento,  telefone,  tipoUsuario, endereco, senha);
+        conexaoBanco.insertFuncionario(cpf, salario);
+        return true;
     }
     
     public boolean cadastrarUsuario (String nome, String cpf, Date nascimento, String telefone, TipoUsuario tipoUsuario, Endereco endereco, String senha) throws SQLException{

@@ -10,6 +10,7 @@ import Controle.ControladorUsuarios;
 import Modelo.TipoUsuario;
 import Modelo.Usuario;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -182,14 +183,19 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jButtonListarFuncionariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonListarFuncionariosActionPerformed
         // TODO add your handling code here:
-        TodosUsuarios frame = new TodosUsuarios(controladorU, u, true);
+        TodosFuncionarios frame = new TodosFuncionarios(controladorU, u);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }//GEN-LAST:event_jButtonListarFuncionariosActionPerformed
 
     private void jButtonListarFilmesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonListarFilmesActionPerformed
         // TODO add your handling code here:
-        TodosFilmes frame = new TodosFilmes(controladorF, u);
+        TodosFilmes frame = null;
+        try {
+            frame = new TodosFilmes(controladorF, u);
+        } catch (ParseException ex) {
+            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }//GEN-LAST:event_jButtonListarFilmesActionPerformed

@@ -34,7 +34,7 @@ public class CadastrarUsuario extends javax.swing.JFrame {
         initComponents();
          jFormattedTextFieldCPFTitular.setEnabled(false);
          jTextFieldSalario.setVisible(false);
-         jLabel13.setVisible(false);
+         jLabel10.setVisible(false);
         this.controladorU = controlador;
         this.u =u;
         try {
@@ -59,6 +59,8 @@ public class CadastrarUsuario extends javax.swing.JFrame {
             jCheckBoxDependente.setVisible(false);
             jFormattedTextFieldCPFTitular.setVisible(false);
             jTextFieldSalario.setVisible(true);
+            jLabel10.setVisible(true);
+            jLabel13.setVisible(false);
             jLabel1.setText("CADASTRAR FUNCIONARIO");
         }
     }
@@ -296,13 +298,25 @@ public class CadastrarUsuario extends javax.swing.JFrame {
         } catch (ParseException ex) {
             Logger.getLogger(CadastrarUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
-        try {
-            if( controladorU.cadastrarUsuario(jTextFieldNome.getText(), jFormattedTextFieldCPF.getText(), data, jTextFieldTelefone.getText(), tu,e, jPasswordFieldSenha.getText()))
-                JOptionPane.showMessageDialog(null, "Usuario cadastrado com sucesso", "", JOptionPane.INFORMATION_MESSAGE);
-            else
-                JOptionPane.showMessageDialog(null, "", "Problema ao realizar cadastro", JOptionPane.ERROR_MESSAGE);
-        } catch (SQLException ex) {
-            Logger.getLogger(CadastrarUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        if(tu==TipoUsuario.ATENDENTE){
+            try {
+                if( controladorU.cadastrarFuncionario(jTextFieldNome.getText(), jFormattedTextFieldCPF.getText(), data, jTextFieldTelefone.getText(), tu,e, jPasswordFieldSenha.getText(), Float.parseFloat(jTextFieldSalario.getText())))
+                    JOptionPane.showMessageDialog(null, "Usuario cadastrado com sucesso", "", JOptionPane.INFORMATION_MESSAGE);
+                else
+                    JOptionPane.showMessageDialog(null, "", "Problema ao realizar cadastro", JOptionPane.ERROR_MESSAGE);
+            } catch (SQLException ex) {
+                Logger.getLogger(CadastrarUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else{
+            try {
+                if( controladorU.cadastrarUsuario(jTextFieldNome.getText(), jFormattedTextFieldCPF.getText(), data, jTextFieldTelefone.getText(), tu,e, jPasswordFieldSenha.getText()))
+                    JOptionPane.showMessageDialog(null, "Usuario cadastrado com sucesso", "", JOptionPane.INFORMATION_MESSAGE);
+                else
+                    JOptionPane.showMessageDialog(null, "", "Problema ao realizar cadastro", JOptionPane.ERROR_MESSAGE);
+            } catch (SQLException ex) {
+                Logger.getLogger(CadastrarUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         this.dispose();
     }//GEN-LAST:event_jButtonOKActionPerformed

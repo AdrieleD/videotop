@@ -22,6 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.input.DataFormat;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.text.MaskFormatter;
 
@@ -52,6 +53,7 @@ public class CadastrarFilme extends javax.swing.JFrame {
         for(Estudio e: estudios){
             jComboBoxestudio.addItem(e.getNome());
         }
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }
 
     /**
