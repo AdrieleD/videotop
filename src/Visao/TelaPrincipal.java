@@ -150,7 +150,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jButtonCadastrarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCadastrarClienteActionPerformed
         // TODO add your handling code here:
-        CadastrarUsuario frame = new CadastrarUsuario(controladorU, u, false);
+        CadastrarUsuario frame = new CadastrarUsuario(controladorU, u, false, false);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }//GEN-LAST:event_jButtonCadastrarClienteActionPerformed
@@ -176,7 +176,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jButtonCadastrarFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCadastrarFuncionarioActionPerformed
         // TODO add your handling code here:
-        CadastrarUsuario frame = new CadastrarUsuario(controladorU, u, true);
+        CadastrarUsuario frame = new CadastrarUsuario(controladorU, u, true, false);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }//GEN-LAST:event_jButtonCadastrarFuncionarioActionPerformed

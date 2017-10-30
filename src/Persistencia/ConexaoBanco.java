@@ -82,6 +82,55 @@ public class ConexaoBanco  {
                 return  true;
     } 
     
+    public boolean  updateUsuario(String nome, String cpf, Date nascimento, String telefone, TipoUsuario tipoUsuario, Endereco endereco, String senha) throws SQLException{
+        java.sql.Date data = new java.sql.Date(nascimento.getTime());
+        cpf=cpf.replace(".", "");
+        cpf=cpf.replace("-", "");
+        sql = "UPDATE usuario "
+                +" SET cpf = ?,senha = ?,nome = ?,dataNascimento = ?,logradouro= ?,numero= ?,bairro= ?,cep = ?,telefone = ?, idtipoUsuario = ?"
+                + "  WHERE cpf = ? ";
+                    stmt = conexao.prepareStatement(sql);
+                    stmt.setString(1, cpf);
+                    stmt.setString(2, senha);
+                    stmt.setString(3, nome);
+                    stmt.setDate(4, data);
+                    stmt.setString(5, endereco.getLogradouro());
+                    stmt.setString(6, Integer.toString( endereco.getNumero()));
+                    stmt.setString(7, endereco.getBairro());
+                    stmt.setString(8,endereco.getCep());
+                    stmt.setString(9,telefone);
+                    stmt.setInt(10, tipoUsuario.getTiposUsuario());
+                    stmt.setString(11, cpf);          
+                    System.out.println("tipo usuario "+ tipoUsuario.getTiposUsuario());
+                    stmt.execute();
+                    stmt.close();
+                
+                return  true;
+    } 
+    
+     public boolean  updateFuncionario(String nome, String cpf, Date nascimento, String telefone, TipoUsuario tipoUsuario, Endereco endereco, String senha, float salario) throws SQLException{
+        java.sql.Date data = new java.sql.Date(nascimento.getTime());
+        
+        updateUsuario(nome, cpf, nascimento, telefone, tipoUsuario, endereco, senha);
+        
+        cpf=cpf.replace(".", "");
+        cpf=cpf.replace("-", "");
+        sql = "UPDATE funcionario "
+                +" SET cpf = ?,salario = ?"
+                + "  WHERE cpf = ?";
+                    stmt = conexao.prepareStatement(sql);
+                    stmt.setString(1, cpf);
+                    stmt.setFloat(2, salario);
+                    stmt.setString(3, cpf);
+                  
+                    stmt.execute();
+                    stmt.close();
+                
+                 
+                return  true;
+    } 
+    
+    
     public boolean insertFilme(String titulo, String ano, String classe) throws SQLException{
         System.out.println(ano);
         sql = "INSERT INTO filme (titulo,ano,filmeTC)VALUES(?,?,?)";

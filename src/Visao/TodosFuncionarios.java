@@ -157,9 +157,9 @@ public class TodosFuncionarios extends javax.swing.JFrame {
         else{
            CadastrarUsuario frame;
            if(usuario.getTipoUsuario()==TipoUsuario.ATENDENTE)
-               frame = new CadastrarUsuario(controladorU, usuario, false);
+               frame = new CadastrarUsuario(controladorU, usuario, false, true);
            else
-                 frame = new CadastrarUsuario(controladorU, usuario, true);
+                 frame = new CadastrarUsuario(controladorU, usuario, true, true);
             Usuario u = null;
             try {
                 u = controladorU.buscaUsuario(jTableUsuarios.getValueAt(i, 1).toString());

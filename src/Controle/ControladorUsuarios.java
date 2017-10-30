@@ -77,6 +77,32 @@ public class ControladorUsuarios {
         return true;
     }
     
+    
+    public boolean atualizarUsuario (String nome, String cpf, Date nascimento, String telefone, TipoUsuario tipoUsuario, Endereco endereco, String senha) throws SQLException{
+        if(nome.equals("")||cpf.equals("")|| telefone.equals("") || endereco.equals("") || senha.equals(""))
+        {
+            return false;
+        }
+        
+        Usuario usuario = new Usuario(nome, cpf, nascimento, telefone, tipoUsuario, endereco, senha);
+        conexaoBanco.updateUsuario(nome, cpf, nascimento, telefone, tipoUsuario, endereco, senha);
+        System.out.println("Usuario Atualizado com sucesso");        
+        return true;
+    }
+    
+    
+    public boolean atualizarFuncionario (String nome, String cpf, Date nascimento, String telefone, TipoUsuario tipoUsuario, Endereco endereco, String senha, float salario) throws SQLException{
+        if(nome.equals("")||cpf.equals("")|| telefone.equals("") || endereco.equals("") || senha.equals(""))
+        {
+            return false;
+        }
+        
+        Funcionario funcionario = new Funcionario(nome, cpf, nascimento, telefone, tipoUsuario, endereco, senha,salario);
+        conexaoBanco.updateFuncionario(nome, cpf, nascimento, telefone, tipoUsuario, endereco, senha,salario);
+        System.out.println("Usuario Atualizado com sucesso");        
+        return true;
+    }
+    
     public boolean removeUsuario(String cpf) throws SQLException{
         Usuario u=buscaUsuario(cpf);
         if(u != null){

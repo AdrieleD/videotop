@@ -30,7 +30,7 @@ public class CadastrarUsuario extends javax.swing.JFrame {
     /**
      * Creates new form CadastrarUsuario
      */
-    public CadastrarUsuario(ControladorUsuarios controlador, Usuario u, boolean cadAtendente) {
+    public CadastrarUsuario(ControladorUsuarios controlador, Usuario u, boolean cadAtendente, boolean editar) {
         initComponents();
          jFormattedTextFieldCPFTitular.setEnabled(false);
          jTextFieldSalario.setVisible(false);
@@ -62,6 +62,14 @@ public class CadastrarUsuario extends javax.swing.JFrame {
             jLabel10.setVisible(true);
             jLabel13.setVisible(false);
             jLabel1.setText("CADASTRAR FUNCIONARIO");
+        }
+        if(editar){
+            jButtonSalvar.setVisible(true);
+            jButtonOK.setVisible(false);
+        }
+        else{
+            jButtonSalvar.setVisible(false);
+            jButtonOK.setVisible(true);
         }
     }
     
@@ -107,6 +115,7 @@ public class CadastrarUsuario extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jTextFieldSalario = new javax.swing.JTextField();
+        jButtonSalvar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -164,6 +173,13 @@ public class CadastrarUsuario extends javax.swing.JFrame {
 
         jLabel10.setText("Salário:");
 
+        jButtonSalvar.setText("Salvar");
+        jButtonSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSalvarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -176,6 +192,8 @@ public class CadastrarUsuario extends javax.swing.JFrame {
                         .addComponent(jTextFieldNome))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButtonSalvar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jButtonOK)
@@ -271,7 +289,8 @@ public class CadastrarUsuario extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonOK)
-                    .addComponent(jButtonCancelar))
+                    .addComponent(jButtonCancelar)
+                    .addComponent(jButtonSalvar))
                 .addContainerGap())
         );
 
@@ -344,6 +363,50 @@ public class CadastrarUsuario extends javax.swing.JFrame {
             jFormattedTextFieldCPFTitular.setEnabled(true);
     }//GEN-LAST:event_jCheckBoxDependenteActionPerformed
 
+    private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
+        // TODO add your handling code here:
+         // TODO add your handling code here:
+        int numero = Integer.parseInt(jTextFieldNumero.getText());
+        Endereco e = new Endereco(jTextFieldLogradouro.getText(),numero , jTextFieldBairro.getText(), jTextFieldCEP.getText());
+        TipoUsuario tu;
+        if(jCheckBoxDependente.isVisible()){
+            if(jCheckBoxDependente.isSelected())
+                tu = TipoUsuario.DEPENDENTE;
+            else
+                tu = TipoUsuario.CLIENTE;
+        }
+        else
+               tu = TipoUsuario.ATENDENTE;
+        DateFormat df= new SimpleDateFormat("dd/mm/yyyy");
+        Date data = new Date();
+        try {
+            data = df.parse(jFormattedTextFielddata.getText());
+        } catch (ParseException ex) {
+            Logger.getLogger(CadastrarUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(tu==TipoUsuario.ATENDENTE){
+            try {
+                if( controladorU.atualizarFuncionario(jTextFieldNome.getText(), jFormattedTextFieldCPF.getText(), data, jTextFieldTelefone.getText(), tu,e, jPasswordFieldSenha.getText(), Float.parseFloat(jTextFieldSalario.getText())))
+                    JOptionPane.showMessageDialog(null, "Usuario cadastrado com sucesso", "", JOptionPane.INFORMATION_MESSAGE);
+                else
+                    JOptionPane.showMessageDialog(null, "", "Problema ao realizar cadastro", JOptionPane.ERROR_MESSAGE);
+            } catch (SQLException ex) {
+                Logger.getLogger(CadastrarUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else{
+            try {
+                 if( controladorU.atualizarUsuario(jTextFieldNome.getText(), jFormattedTextFieldCPF.getText(), data, jTextFieldTelefone.getText(), tu,e, jPasswordFieldSenha.getText()))
+                      JOptionPane.showMessageDialog(null, "Usuario atualizado com sucesso", "", JOptionPane.INFORMATION_MESSAGE);
+                else
+                    JOptionPane.showMessageDialog(null, "", "Problema ao realizar atualizado", JOptionPane.ERROR_MESSAGE);
+            } catch (SQLException ex) {
+                Logger.getLogger(CadastrarUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        this.dispose();
+    }//GEN-LAST:event_jButtonSalvarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -354,6 +417,7 @@ public class CadastrarUsuario extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCancelar;
     private javax.swing.JButton jButtonOK;
+    private javax.swing.JButton jButtonSalvar;
     protected javax.swing.JCheckBox jCheckBoxDependente;
     protected javax.swing.JFormattedTextField jFormattedTextFieldCPF;
     private javax.swing.JFormattedTextField jFormattedTextFieldCPFTitular;
