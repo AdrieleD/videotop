@@ -59,7 +59,7 @@ public class ControladorFilmes {
         }
         Filme filme = new Filme(idFilme, titulo,  genero, estudio,  lancamento, atorPrincipal,  quantFitas, quantFitasDisp, classe);
         filmesCadastrados.add(filme);
-        conexaoBanco.insertFilme(titulo, Integer.toString(lancamento.getYear()+1900), classe);
+        conexaoBanco.insertFilme(titulo, Integer.toString(lancamento.getYear()+1900), classe,quantFitas);
         System.out.println("Usuario Cadastrado com sucesso");  
         return true;
     }

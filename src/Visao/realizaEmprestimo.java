@@ -206,11 +206,15 @@ public class realizaEmprestimo extends javax.swing.JFrame {
             Logger.getLogger(realizaEmprestimo.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (!(jIdFilme.getText().equals("") || jCPF.getText().equals("") || jDataEmprestimo.getText().equals("") || jDataDevolucao.getText().equals("") || jValor.getText().equals(""))) {
-            if (controle.realizarEmprestimos(Integer.parseInt(jIdFilme.getText()), jCPF.getText(), dataEmprestimo, dataDevolucao, Float.parseFloat(jValor.getText()))) {
-                LimpaCamposEmprestimo();
-                JOptionPane.showMessageDialog(null, "Emprestimo realizado com sucesso !", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(null, "ERRO: Preencha os campos corretamente!", "Erro", JOptionPane.ERROR_MESSAGE);
+            try {
+                if (controle.realizarEmprestimos(Integer.parseInt(jIdFilme.getText()), jCPF.getText(), dataEmprestimo, dataDevolucao, Float.parseFloat(jValor.getText()))) {
+                    LimpaCamposEmprestimo();
+                    JOptionPane.showMessageDialog(null, "Emprestimo realizado com sucesso !", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "ERRO: Preencha os campos corretamente!", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(realizaEmprestimo.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             JOptionPane.showMessageDialog(null, "ERRO: Preencha os campos corretamente!", "Erro", JOptionPane.ERROR_MESSAGE);

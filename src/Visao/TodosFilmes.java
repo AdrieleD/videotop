@@ -34,10 +34,10 @@ public class TodosFilmes extends javax.swing.JFrame {
         for(Filme f : filmes){
                     if(u.getClasse().equals("U")){
                         if(f.getClasse().equals(u.getClasse()))
-                            val.addRow(new Object[]{f.getIdFilme(), f.getTitulo(), f.getLancamento().getYear()+1900}); //soma 1900 por causa da funçao getYear
+                            val.addRow(new Object[]{f.getIdFilme(), f.getTitulo(), f.getLancamento().getYear()+1900, f.getQuantFitasDisp()}); //soma 1900 por causa da funçao getYear
                     }
                     else
-                        val.addRow(new Object[]{f.getIdFilme(), f.getTitulo(), f.getLancamento().getYear()+1900}); //soma 1900 por causa da funçao getYear
+                        val.addRow(new Object[]{f.getIdFilme(), f.getTitulo(), f.getLancamento().getYear()+1900, f.getQuantFitasDisp()}); //soma 1900 por causa da funçao getYear
          }
         if(u.getTipoUsuario()== TipoUsuario.CLIENTE || u.getTipoUsuario()== TipoUsuario.DEPENDENTE )
             jButtonExcluir.setVisible(false);
@@ -66,14 +66,14 @@ public class TodosFilmes extends javax.swing.JFrame {
 
             },
             new String [] {
-                "idFilme", "Titulo", "Ano"
+                "idFilme", "Titulo", "Ano", "Quantidade"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {

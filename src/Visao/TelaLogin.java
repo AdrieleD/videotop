@@ -134,7 +134,13 @@ public class TelaLogin extends javax.swing.JFrame {
                     new TelaPrincipal(controladorU, u, controladorF).setVisible(true); //recebe o tipoUsuario para verificar qual tipo a interface vai abrir
                 break;
                 default:
-                    new realizaEmprestimo(controladorF, u).setVisible(true);
+            {
+                try {
+                    new TodosFilmes(controladorF, u).setVisible(rootPaneCheckingEnabled);
+                } catch (ParseException ex) {
+                    Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
             }
         }
         else

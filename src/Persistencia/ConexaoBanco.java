@@ -6,6 +6,7 @@
 package Persistencia;
 
 import Modelo.Ator;
+import Modelo.Emprestimo;
 import Modelo.Endereco;
 import Modelo.Estudio;
 import Modelo.Filme;
@@ -43,7 +44,7 @@ public class ConexaoBanco  {
         this.stmt = null;
         this.rs = null;
         this.st = null;
-        this.conexao = DriverManager.getConnection("jdbc:mysql://localhost/videotopdb", "root", "foiprotpdetopicos");
+        this.conexao = DriverManager.getConnection("jdbc:mysql://localhost/videotopdb", "root", "344037");
     }
     
     public boolean insertFuncionario(String cpf, float salario) throws SQLException{
@@ -131,7 +132,10 @@ public class ConexaoBanco  {
     } 
     
     
-    public boolean insertFilme(String titulo, String ano, String classe) throws SQLException{
+    public boolean insertFilme(String titulo, String ano, String classe, int qtdFitas) throws SQLException{
+        int id; 
+        String addFitas = " ";
+        
         System.out.println(ano);
         sql = "INSERT INTO filme (titulo,ano,filmeTC)VALUES(?,?,?)";
         stmt = conexao.prepareStatement(sql);
@@ -140,6 +144,27 @@ public class ConexaoBanco  {
         stmt.setString(3, classe);
         stmt.execute();
         stmt.close();
+        
+        
+        sql="SELECT idFilme FROM filme WHERE titulo = '"+titulo+"' AND filmeTC = '"+classe+"'";
+        st = conexao.createStatement();
+        rs = st.executeQuery(sql);
+        rs.next();
+        id = rs.getInt("idFilme");
+        st.close();
+        
+        System.out.println("------- id "+id);
+        
+        addFitas = addFitas.concat("("+Integer.toString(id)+")");
+        for(int i = 1; i<= qtdFitas-1; i++){
+            addFitas = addFitas.concat(",("+Integer.toString(id)+")");
+        }
+        
+        sql = "INSERT INTO fita (idfilme) VALUES "+addFitas;
+        stmt = conexao.prepareStatement(sql);
+        stmt.execute();
+        stmt.close();
+        
         return false;
     }
     
@@ -171,10 +196,18 @@ public class ConexaoBanco  {
         return 0;
     }
     
-    public boolean realizarEmprestimo(int idFilme, String cpf, Date dataEmprestimo, Date dataDevolucao, float valor){
+    public boolean realizarEmprestimo(int idFilme, String cpf, Date dataEmprestimo, Date dataDevolucao, float valor) throws SQLException{
         cpf=cpf.replace(".", "");
         cpf=cpf.replace("-", "");
-        
+        sql = "INSERT INTO usuario (idFilme,cpf,dataEmprestimo,dataDevolucao, valor)VALUES(?,?,?,?,?)";
+        stmt = conexao.prepareStatement(sql);
+                    stmt.setInt(1, idFilme);
+                    stmt.setString(2, cpf);
+                    stmt.setDate(3, (java.sql.Date) dataEmprestimo);
+                    stmt.setDate(4, (java.sql.Date) dataDevolucao);
+                    stmt.setFloat(5, valor);
+                    stmt.execute();
+                    stmt.close();
         
         return true;
     }
@@ -291,7 +324,12 @@ public class ConexaoBanco  {
         ArrayList<Filme> filmesCadastrados = new ArrayList();
         Filme f = null;
         //sql = "SELECT * from filme JOIN fita ON filme.idfilme=fita.idfilme";
-        sql="SELECT idFilme, titulo, ano, filmeTC FROM filme";
+        //sql="SELECT idFilme, titulo, ano, filmeTC FROM filme";
+        sql="select filme.idfilme, filme.titulo,filme.ano, filme.filmeTC,COUNT(*) AS qtdFita "
+                + "from filme natural join fita AS f1 "
+                + "WHERE NOT EXISTS (select f2.idfita from fita f2 natural join emprestimo e where f1.idfita = f2.idfita) "
+                + "GROUP BY filme.idfilme,filme.titulo,filme.ano, filme.filmeTC "
+                + "ORDER BY filme.titulo, filme.ano DESC";
         st = conexao.createStatement();
         rs = st.executeQuery(sql);
         Genero g = null;
@@ -301,11 +339,26 @@ public class ConexaoBanco  {
         Date d = new Date();
         while(rs.next()){
             d = df.parse(rs.getString("ano"));
-            f = new Filme(rs.getInt("idFilme"), rs.getString("titulo"), g, e, d, a,0,0, rs.getString("filmeTC") );
+            f = new Filme(rs.getInt("idFilme"), rs.getString("titulo"), g, e, d, a,0,rs.getInt("qtdFita"), rs.getString("filmeTC") );
             filmesCadastrados.add(f);
         }
         st.close();
         return filmesCadastrados;
+    }
+    
+        public ArrayList<Emprestimo> getEmprestados() throws SQLException{
+        ArrayList<Emprestimo> filmesEmprestados = new ArrayList();
+        Emprestimo e  = null;
+
+        sql = "SELECT titulo,  from emprestimo";
+        st = conexao.createStatement();
+        rs = st.executeQuery(sql);
+        while(rs.next()){
+            e = new Emprestimo(rs.getInt("idFita"), rs.getString("cpf"), rs.getDate("dataEmprestimo"), rs.getDate("dataDevolucao"), rs.getFloat("valor"));
+            filmesEmprestados.add(e);
+        }
+        st.close();
+        return filmesEmprestados;        
     }
     
 }
