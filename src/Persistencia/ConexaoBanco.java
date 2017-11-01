@@ -328,8 +328,7 @@ public class ConexaoBanco  {
         sql="select filme.idfilme, filme.titulo,filme.ano, filme.filmeTC,COUNT(*) AS qtdFita "
                 + "from filme natural join fita AS f1 "
                 + "WHERE NOT EXISTS (select f2.idfita from fita f2 natural join emprestimo e where f1.idfita = f2.idfita) "
-                + "GROUP BY filme.idfilme,filme.titulo,filme.ano, filme.filmeTC "
-                + "ORDER BY filme.titulo, filme.ano DESC";
+                + "GROUP BY filme.idfilme,filme.titulo,filme.ano, filme.filmeTC ";
         st = conexao.createStatement();
         rs = st.executeQuery(sql);
         Genero g = null;
